@@ -36,7 +36,7 @@ public class NumberUtil {
            }
            return true;
     }
-	
+	/**compare re***/
 	
 	/**
 	 * string值转换int，失败返回希望值
