@@ -34,6 +34,5 @@
 	<classpathentry kind="lib" path="lib/commons/json/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons/json/commons-beanutils-1.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons/json/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/json/fastjson-1.2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
