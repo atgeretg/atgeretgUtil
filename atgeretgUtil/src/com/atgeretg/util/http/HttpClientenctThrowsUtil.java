@@ -187,7 +187,7 @@ public class HttpClientenctThrowsUtil {
 	 * @throws ParseException
 	 */
 	private String sendHttpPost(HttpPost httpPost)
-			throws ClientProtocolException, java.net.UnknownHostException, IOException, ParseException {
+			throws ClientProtocolException, java.net.UnknownHostException, IOException, ParseException{
 		CloseableHttpClient httpClient = null;
 		CloseableHttpResponse response = null;
 		HttpEntity entity = null;
