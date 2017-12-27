@@ -94,7 +94,7 @@ public class DateUtil {
 	// public static SimpleDateFormat dataTimeFormat = new SimpleDateFormat(
 	// "yyyy-MM-dd HH:mm:ss");
 
-	public static void main(String[] args) throws Exception {
+//	public static void main(String[] args) throws Exception {
 //		long l = diffDateHours(getDateByMinuteAdd(new Date(),-110),new Date());
 //		if(l<2) 
 //		System.out.println(l);
@@ -126,7 +126,7 @@ public class DateUtil {
 		// }
 		// Log.systemLog(formatDateStr_ss(calDateSubHour(new Date(),-6)));
 		// Log.systemLog(formatDateStr_ss(newDateFormat(ymdhmss).parse(getTimeStamp())));
-	}
+//	}
 	
 	
 	/** 锁对象 */
@@ -170,6 +170,18 @@ public class DateUtil {
 		}
 
 		return tl.get();
+	}
+	
+	/**
+	 * 为了知道Date的before是那个时间段而写<br>
+	 * while (date.before(DateUtil.formatStr2date("2017-1-1"))) {等待...}
+	 * @param date
+	 * @param when
+	 * @return
+	 */
+	public static boolean before(Date date, Date when) {
+//		while (date.before(DateUtil.formatStr2date("2017-1-1"))) {等待...}
+		return date.before(when);
 	}
 	
 	/****************************************************************
@@ -1251,7 +1263,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 功能：指定日期加上指定天数
+	 * 功能：指定日期加上指定分数，minute为负数表示减
 	 * 
 	 * @param date
 	 *            日期

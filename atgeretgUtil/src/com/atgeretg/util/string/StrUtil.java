@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class StrUtil {
 	private static final int INDEX_NOT_FOUND = -1;
 	private static final String EMPTY = "";
-
+	private static final String NULL = "null";
 	public static final String ASCII = "ASCII";
 	public static final String ISO_8859_1 = "ISO-8859-1";
 	public static final String GB2312 = "GB2312";
@@ -32,60 +32,170 @@ public class StrUtil {
 		return false;
 	}
 
-	public static void main(String[] args) {
-//		System.out.println(changeChar("a_f_dFF_Dd"));
+	/**
+	 * 字符串是否为空和“null”
+	 * 
+	 * 如果这个字符串为null或者trim后为空字符串或“null”字符串则返回true，否则返回false。
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static boolean isEmptyNull(String str) {
+		if (str == null || EMPTY.equals(str.trim()) || NULL.equals(str.trim()))
+			return true;
+		return false;
 	}
-	
+
+//	 public static void main(String[] args) {
+//		 String[] split = "1459394,1459395,1459403,1692515,1692531,1692537,1692542,1692546,1705181,1705183,1705186,1705187,1705191,1883327".split(",");
+//	 System.out.println(array2String(split,","));
+//	 }
 
 	/**
-     * 下划线转驼峰法
-     * @param line 源字符串
-     * @param smallCamel 大小驼峰,是否为小驼峰
-     * @return 转换后的字符串
-     */
-    public static String underline2Camel(String line,boolean smallCamel){
-        if(line==null||"".equals(line)){
-            return "";
-        }
-        StringBuilder sb=new StringBuilder();
-        Pattern pattern=Pattern.compile("([A-Za-z\\d]+)(_)?");
-        Matcher matcher=pattern.matcher(line);
-        while(matcher.find()){
-            String word=matcher.group();
-            sb.append(smallCamel&&matcher.start()==0?Character.toLowerCase(word.charAt(0)):Character.toUpperCase(word.charAt(0)));
-            int index=word.lastIndexOf('_');
-            if(index>0){
-                sb.append(word.substring(1, index).toLowerCase());
-            }else{
-                sb.append(word.substring(1).toLowerCase());
-            }
-        }
-        return sb.toString();
-    }
-    /**
-     * 驼峰法转下划线
-     * @param line 源字符串
-     * @param smallCamel 大小下划线,是否是英文小写
-     * @return 转换后的字符串
-     */
-    public static String camel2Underline(String line,boolean smallCamel){
-        if(StrUtil.isEmpty(line)){
-            return "";
-        }
-        line=String.valueOf(line.charAt(0)).toUpperCase().concat(line.substring(1));
-        StringBuilder sb=new StringBuilder();
-        Pattern pattern=Pattern.compile("[A-Z]([a-z\\d]+)?");
-        Matcher matcher=pattern.matcher(line);
-        while(matcher.find()){
-            String word=matcher.group();
-            if(smallCamel)
-            	sb.append(word.toLowerCase());
-            else
-            	sb.append(word.toUpperCase());
-            sb.append(matcher.end()==line.length()?"":"_");
-        }
-        return sb.toString();
-    }
+	 * 字符串数组转成字符串
+	 * 
+	 * @param str
+	 *            数组（集合）
+	 * @return
+	 */
+	public static String array2String(List<String> str) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < str.size(); i++) {
+			builder.append(str.get(i));
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * 字符串数组转成字符串
+	 * 
+	 * @param str
+	 *            数组
+	 * @param split
+	 *            分割符
+	 * @return
+	 */
+	public static String array2String(String str[]) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < str.length; i++) {
+			builder.append(str[i]);
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * 字符串数组按指定分割符转成字符串
+	 * 
+	 * @param str
+	 *            数组（集合）
+	 * @param split
+	 *            分割符
+	 * @return
+	 */
+	public static String array2String(List<String> str, String split) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < str.size(); i++) {
+			if (i != str.size() - 1)
+				builder.append(str.get(i)).append(split);
+			else
+				builder.append(str.get(i));
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * 字符串数组按指定分割符转成字符串
+	 * 
+	 * @param str
+	 *            数组
+	 * @param split
+	 *            分割符
+	 * @return
+	 */
+	public static String array2String(String str[], String split) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < str.length; i++) {
+			if (i != str.length - 1)
+				builder.append(str[i]).append(split);
+			else
+				builder.append(str[i]);
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * 拼接传入的object，生成字符串
+	 * 
+	 * @param object
+	 * @return object 为 null 返回null 否则返回生成的字符串
+	 */
+	public static String stringBuilder(Object... object) {
+		if (object == null)
+			return null;
+		StringBuilder builder = new StringBuilder();
+		for (Object obj : object) {
+			builder.append(obj);
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * 下划线转驼峰法
+	 * 
+	 * @param line
+	 *            源字符串
+	 * @param smallCamel
+	 *            大小驼峰,是否为小驼峰
+	 * @return 转换后的字符串
+	 */
+	public static String underline2Camel(String line, boolean smallCamel) {
+		if (line == null || "".equals(line)) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		Pattern pattern = Pattern.compile("([A-Za-z\\d]+)(_)?");
+		Matcher matcher = pattern.matcher(line);
+		while (matcher.find()) {
+			String word = matcher.group();
+			sb.append(smallCamel && matcher.start() == 0 ? Character.toLowerCase(word.charAt(0))
+					: Character.toUpperCase(word.charAt(0)));
+			int index = word.lastIndexOf('_');
+			if (index > 0) {
+				sb.append(word.substring(1, index).toLowerCase());
+			} else {
+				sb.append(word.substring(1).toLowerCase());
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 驼峰法转下划线
+	 * 
+	 * @param line
+	 *            源字符串
+	 * @param smallCamel
+	 *            大小下划线,是否是英文小写
+	 * @return 转换后的字符串
+	 */
+	public static String camel2Underline(String line, boolean smallCamel) {
+		if (StrUtil.isEmpty(line)) {
+			return "";
+		}
+		line = String.valueOf(line.charAt(0)).toUpperCase().concat(line.substring(1));
+		StringBuilder sb = new StringBuilder();
+		Pattern pattern = Pattern.compile("[A-Z]([a-z\\d]+)?");
+		Matcher matcher = pattern.matcher(line);
+		while (matcher.find()) {
+			String word = matcher.group();
+			if (smallCamel)
+				sb.append(word.toLowerCase());
+			else
+				sb.append(word.toUpperCase());
+			sb.append(matcher.end() == line.length() ? "" : "_");
+		}
+		return sb.toString();
+	}
 
 	/**
 	 * 将带有“_"的字符串处理为：将“_”字符后个字符变成大小并去掉“_”,如果后一个是数字，“_”和数字都不变<br>

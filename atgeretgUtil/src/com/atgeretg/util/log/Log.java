@@ -1,5 +1,6 @@
 package com.atgeretg.util.log;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -8,149 +9,167 @@ import com.atgeretg.util.string.StringUtil;
 
 /**
  * 将数据打印在控制台上（System.out.println（））
+ * 
  * @author atgeretg
  *
  */
 public class Log {
 	public static void main(String[] args) {
-		systemLog(new String[]{"fd","fd96"});
-		systemLog("dfd","fdsa","fdsa");
-		systemLog(new Double[]{1d,5d,5d,6d,9d});
+		systemLog(new String[] { "fd", "fd96" });
+		systemLog("dfd", "fdsa", "fdsa");
+		systemLog(new Double[] { 1d, 5d, 5d, 6d, 9d });
 	}
-	
+
 	/**
 	 * 系统的打印输出 Object<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param object Object
+	 * @param object
+	 *            Object
 	 */
 	public static void systemLog(Object... object) {
 		for (Object obj : object) {
-			myLog(obj);	
+			myLog(obj);
 		}
-		
+
 	}
+
 	/**
 	 * 系统的打印输出 Object,不换行打印<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param object Object
+	 * @param object
+	 *            Object
 	 */
 	public static void systemLog_notLn(Object... object) {
 		for (Object obj : object) {
-			System.out.print(obj);	
+			myLogNotLine(obj);
 		}
 		myLog("");
 	}
-	
-	
+
 	/**
 	 * 系统的打印输出 String数组<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param o Object
+	 * @param o
+	 *            Object
 	 */
 	public static void systemLog(String... string) {
-		for (String s:string) {
+		for (String s : string) {
 			myLog(s);
 		}
 	}
-	
+
 	/**
 	 * 系统的打印输出 String数组,不换行打印<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param o Object
+	 * @param o
+	 *            Object
 	 */
 	public static void systemLog_notLn(String... string) {
-		for (String s:string) {
-			System.out.print(s);
+		for (String s : string) {
+			myLogNotLine(s);
 		}
-		System.out.println();
+		myLog("");
 	}
-	
-	
+
 	/**
 	 * 系统的打印输出 Integer<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param integer Integer对象
+	 * @param integer
+	 *            Integer对象
 	 */
 	public static void systemLog(Integer... integer) {
-		for (Integer i:integer) {
+		for (Integer i : integer) {
 			myLog(i);
 		}
+		
 	}
-	
+
 	/**
 	 * 系统的打印输出 byte[]数组<br>
+	 * 
 	 * @param arrBytes
 	 */
 	public static void systemLog(byte[] arrBytes) {
 		myLog(ByteUtil.byteArray2HexString(arrBytes, true));
 	}
-	
+
 	/**
 	 * 系统的打印输出 int[]数组<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param i int数组
+	 * @param i
+	 *            int数组
 	 */
 	public static void systemLog(int[] i) {
 		myLog(StringUtil.intArraytoString(i));
 	}
-	
+
 	/**
 	 * 系统的打印输出 double[]数组<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param d double数组
+	 * @param d
+	 *            double数组
 	 */
 	public static void systemLog(double[] d) {
-		for (double dd:d) {
+		for (double dd : d) {
 			myLog(dd);
 		}
-		
+		myLog(new StringBuilder().append("array size = ").append(d.length).append(" ").append(Arrays.toString(d))
+				.toString());
 	}
-	
+
 	/**
 	 * 系统的打印输出 float[]数组<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param f float数组
+	 * @param f
+	 *            float数组
 	 */
 	public static void systemLog(float[] f) {
-		for (float ff:f) {
+		for (float ff : f) {
 			myLog(ff);
 		}
+		myLog(new StringBuilder().append("array size = ").append(f.length).append(" ").append(Arrays.toString(f))
+				.toString());
 	}
-	
+
 	/**
 	 * 系统的打印输出 float[]数组<br>
 	 * 即是：System.out.println()
 	 * 
-	 * @param f float数组
+	 * @param f
+	 *            float数组
 	 */
 	public static void systemLog(Map map) {
 		Iterator iterator = map.keySet().iterator();
-		while(iterator.hasNext()){
+		while (iterator.hasNext()) {
 			Object key = iterator.next();
 			Object values = map.get(key);
-			myLog("key = " + key + "  values = " + values);
+			myLog(new StringBuilder().append("key = ").append(key).append("  values = ").append(values).toString());
 		}
-			
+
 	}
-	
+
 	/**
-	 * 异常打印输出
-	 * 即是：e.printStackTrace();
+	 * 异常打印输出 即是：e.printStackTrace();
 	 * 
-	 * @param e 异常
+	 * @param e
+	 *            异常
 	 */
-	public static void exceptionLog(Exception e){
+	public static void exceptionLog(Exception e) {
 		e.printStackTrace();
 	}
-	
+
+	private static void myLogNotLine(Object o) {
+		System.out.print(o);
+	}
+
 	private static void myLog(Object o) {
 		System.out.println(o);
 	}

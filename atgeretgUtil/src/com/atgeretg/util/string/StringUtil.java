@@ -1382,7 +1382,6 @@ public class StringUtil {
     /**
      * 把整形数组转换成以“,”相隔的字符串
      *
-     * @serialData 2008-01-08
      * @param a
      *            数组a
      * @return 以“,”相隔的字符串
@@ -1539,33 +1538,33 @@ public class StringUtil {
         return "";
     }
  
-    /**
-     * 把字节码转换成16进制
-     */
-    public static String byte2hex(byte bytes[]) {
-        StringBuffer retString = new StringBuffer();
-        for (int i = 0; i < bytes.length; ++i) {
-            retString.append(Integer.toHexString(0x0100 + (bytes[i] & 0x00FF))
-                    .substring(1).toUpperCase());
-        }
-        return retString.toString();
-    }
+//    /**
+//     * 把字节码转换成16进制
+//     */
+//    public static String byte2hex(byte bytes[]) {
+//        StringBuffer retString = new StringBuffer();
+//        for (int i = 0; i < bytes.length; ++i) {
+//            retString.append(Integer.toHexString(0x0100 + (bytes[i] & 0x00FF))
+//                    .substring(1).toUpperCase());
+//        }
+//        return retString.toString();
+//    }
  
-    /**
-     * 把16进制转换成字节码
-     *
-     * @param hex
-     * @return
-     */
-    public static byte[] hex2byte(String hex) {
-        byte[] bts = new byte[hex.length() / 2];
-        for (int i = 0; i < bts.length; i++) {
-            bts[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2),
-                    16);
-        }
-        return bts;
-    }
- 
+//    /**
+//     * 把16进制转换成字节码
+//     *
+//     * @param hex
+//     * @return
+//     */
+//    public static byte[] hex2byte(String hex) {
+//        byte[] bts = new byte[hex.length() / 2];
+//        for (int i = 0; i < bts.length; i++) {
+//            bts[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2),
+//                    16);
+//        }
+//        return bts;
+//    }
+    
     /**
      * 转换数字为固定长度的字符串
      *
@@ -1628,12 +1627,12 @@ public class StringUtil {
         return return_value;
     }
  
-    public static boolean isNotEmpty(String str) {
-        if (str != null && !str.equals(""))
-            return true;
-        else
-            return false;
-    }
+//    public static boolean isNotEmpty(String str) {
+//        if (str != null && !str.equals(""))
+//            return true;
+//        else
+//            return false;
+//    }
  
     public static boolean isDate(String date) {
         String regEx = "\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}";
