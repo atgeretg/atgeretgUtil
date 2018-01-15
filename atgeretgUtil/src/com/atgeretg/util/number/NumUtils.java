@@ -2,9 +2,14 @@ package com.atgeretg.util.number;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.atgeretg.util.string.StrUtil;
 
 /**
  * 
@@ -33,6 +38,138 @@ public class NumUtils {
     private static final int DOT=-99;
     //标记为无效数字
     private static final int INVALID=-100;
+    
+    private static Pattern numericPattern = Pattern.compile("^[0-9\\-]+$");//数字表示
+//  private static Pattern numericStringPattern = Pattern
+//          .compile("^[0-9\\-\\-]+$");
+  private static Pattern floatNumericPattern = Pattern
+          .compile("^[0-9\\-\\.]+$");//浮点数字
+  private static Pattern ENumericPattern = Pattern.compile("^((-?\\d+.?\\d*)[Ee]{1}(-?\\d+))$");//科学计数法表示
+    
+    /**
+     * 利用正则表达式判断字符串是否是int型数字
+     *
+     * @param src
+     *            源字符串
+     * @return 是否数字的标志
+     */
+    public static boolean isIntNumeric(String src) {
+    	if(StrUtil.isEmpty(src))
+    		return false;
+    	 Matcher m = numericPattern.matcher(src);
+         return m.find();
+    }
+    
+    /**
+     * 判断是否浮点数字表示
+     *
+     * @param src
+     *            源字符串
+     * @return 是否数字的标志
+     */
+    public static boolean isFloatNumeric(String src) {
+    	if(StrUtil.isEmpty(src))
+    		return false;
+    	 Matcher m = floatNumericPattern.matcher(src);
+    	 return m.find();
+    }
+    
+    /**
+     * 利用正则表达式判断字符串是否是数字和科学计数法
+     * @param str
+     * @return
+     */
+    public static boolean isNumber(String str){
+           if(isFloatNumeric(str) || isENum(str))
+        	   return true;
+           return false;
+    }
+    
+    
+    /**
+	 * 判断输入字符串是否为科学计数法
+	 * @param input
+	 * @return
+	 */
+    public static boolean isENum(String str){
+    	if(StrUtil.isEmpty(str))
+    		return false;
+        return ENumericPattern.matcher(str).matches();
+    }
+    
+    /**
+     * 科学计数法的string型转成普通型string,(是普通型string，还是普通型，不会变的）
+     * @param eNum
+     * @return
+     */
+    public static String changeENum2Num(String eNum) {
+    	if(isNumber(eNum))
+    		return new BigDecimal(eNum).toPlainString();
+    	return null;
+    }
+    
+    /**
+     * 比较大的double转成string，可以防止出现科学计数法
+     * @param d
+     * @return
+     */
+    public static String doubleToString(double d){  
+        String str = DecimalFormat.getInstance().format(d);  
+        String result = str.replaceAll(",", "");  
+        return result;  
+  
+    }  
+	
+	/**
+	 * string值转换int，失败返回希望值
+	 * 
+	 * @param changeStr
+	 *            转换string值
+	 * @param failValue
+	 *            希望值
+	 * @return
+	 */
+	public static int string2IntValue(String changeStr, int failValue) {
+		try {
+			return Integer.valueOf(changeStr);
+		} catch (Exception e) {
+		}
+		return failValue;
+	}
+	
+	/**
+	 * string值转换float，失败返回希望值
+	 * 
+	 * @param changeStr
+	 *            转换string值
+	 * @param failValue
+	 *            希望值
+	 * @return
+	 */
+	public static float string2floatValue(String changeStr, float failValue) {
+		try {
+			return Float.valueOf(changeStr);
+		} catch (Exception e) {
+		}
+		return failValue;
+	}
+	
+	/**
+	 * string值转换double，失败返回希望值
+	 * 
+	 * @param changeStr
+	 *            转换string值
+	 * @param failValue
+	 *            希望值
+	 * @return
+	 */
+	public static double string2doubleValue(String changeStr, double failValue) {
+		try {
+			return Double.valueOf(changeStr);
+		} catch (Exception e) {
+		}
+		return failValue;
+	}
 
 
     /**
@@ -729,35 +866,30 @@ public class NumUtils {
     /**
 	 * 判断字符串是否是整数
 	 */
-	public static boolean isInteger(String value) {
-		try {
-			Integer.parseInt(value);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
+//	public static boolean isInteger(String value) {
+//		try {
+//			Integer.parseInt(value);
+//			return true;
+//		} catch (NumberFormatException e) {
+//			return false;
+//		}
+//	}
 
 	/**
 	 * 判断字符串是否是浮点数
 	 */
-	public static boolean isDouble(String value) {
-		try {
-			Double.parseDouble(value);
-			if (value.contains("."))
-				return true;
-			return false;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
+//	public static boolean isDouble(String value) {
+//		try {
+//			Double.parseDouble(value);
+//			if (value.contains("."))
+//				return true;
+//			return false;
+//		} catch (NumberFormatException e) {
+//			return false;
+//		}
+//	}
 	
-	/**
-	 * 判断字符串是否是数字
-	 */
-	public static boolean isNumber(String value){
-		return isInteger(value) || isDouble(value);
-	}
+	
 	
 	/**
 	 * 返回百分比
@@ -782,8 +914,16 @@ public class NumUtils {
 		
 		return num.format(relt);
 	}
-
+	
+	
+    
     public static void main(String[] args) {
+    	
+    	String s = "69-209078054";
+    	System.out.println(isNumber(s));
+    	
+//    	System.out.println(isENum(s));
+    	
 //		short s = 10;
 //		byte b=10;
 //		char c='A';
@@ -802,13 +942,13 @@ public class NumUtils {
 //				System.out.println(" 错误信息："+e.getMessage());
 //			}
 //		}
-        String a = "9213213210.4508";
-        String b = "12323245512512100.4500081";
-        String r = multiply(a, b);
-        System.out.println(a+"*"+b+"="+r);
-        String r1 = add(a, b);
-        System.out.println(a+"+"+b+"="+r1);
-        String r2 = subduct(a, b);
-        System.out.println(a+"-"+b+"="+r2);
+//        String a = "9213213210.4508";
+//        String b = "12323245512512100.4500081";
+//        String r = multiply(a, b);
+//        System.out.println(a+"*"+b+"="+r);
+//        String r1 = add(a, b);
+//        System.out.println(a+"+"+b+"="+r1);
+//        String r2 = subduct(a, b);
+//        System.out.println(a+"-"+b+"="+r2);
     }
 }

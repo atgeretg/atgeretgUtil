@@ -21,8 +21,8 @@ import com.atgeretg.util.log.Log;
 
 public class StringUtil {
     private static Pattern numericPattern = Pattern.compile("^[0-9\\-]+$");//数字表示
-    private static Pattern numericStringPattern = Pattern
-            .compile("^[0-9\\-\\-]+$");
+//    private static Pattern numericStringPattern = Pattern
+//            .compile("^[0-9\\-\\-]+$");
     private static Pattern floatNumericPattern = Pattern
             .compile("^[0-9\\-\\.]+$");//浮点数字
     private static Pattern abcPattern = Pattern.compile("^[a-z|A-Z]+$");
