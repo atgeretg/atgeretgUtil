@@ -2,6 +2,7 @@ package com.atgeretg.util.file;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,9 +11,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -506,6 +511,117 @@ public class FileUtil {
 			log.error(e);
 		}
 		return null;
+	}
+
+
+	/**
+	 * 一行一行读取文件，一行的内容就是一个数组中的元素，默认以UFT8的格式读取
+	 * 
+	 * @param path
+	 *            文件路径
+	 * @return 出错失败：null | 成功：String[]
+	 */
+	public static String[] readFile2Arrary(String path) {
+		return readFile2Arrary(path, FileUtil.UTF8);
+	}
+
+	/**
+	 * 一行一行读取文件，一行的内容就是一个数组中的元素,按指定的格式读取
+	 * 
+	 * @param path
+	 *            文件路径
+	 * @param encode
+	 *            编码格式
+	 * @return 出错失败：null | 成功：String[]
+	 */
+	public static String[] readFile2Arrary(String path, String encode) {
+		List<String> list = readFile2List(path, encode);
+		if (list == null)
+			return null;
+		String[] array = new String[list.size()];
+		return list.toArray(array);
+	}
+
+	/**
+	 * 一行一行读取文件，一行的内容就是一个list中的元素，默认以UFT8的格式读取
+	 * 
+	 * @param path
+	 *            文件路径
+	 * @return 出错失败：null | 成功：List<String>
+	 */
+	public static List<String> readFile2List(String path) {
+		return readFile2List(path, FileUtil.UTF8);
+	}
+
+	/**
+	 * 一行一行读取文件，一行的内容就是一个list中的元素，按指定的格式读取
+	 * 
+	 * @param path
+	 *            文件路径
+	 * @param encode
+	 *            编码格式
+	 * @return
+	 */
+	public static List<String> readFile2List(String path, String encode) {
+		FileInputStream fis = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		try {
+			if (StrUtil.isEmpty(path))
+				return null;
+			fis = new FileInputStream(path);
+			isr = new InputStreamReader(fis, encode);
+			br = new BufferedReader(isr);
+			String line = "";
+			List<String> list = new ArrayList<>();
+			while ((line = br.readLine()) != null) {
+				list.add(line);
+			}
+			return list;
+		} catch (Exception e) {
+			log.error(e);
+		} finally {
+			// 流的关闭顺序：先打开的后关，后打开的先关， 否则有可能出现java.io.IOException: Stream closed异常
+			try {
+				if (br != null)
+					br.close();
+				if (isr != null)
+					isr.close();
+				if (fis != null)
+					fis.close();
+			} catch (Exception e) {
+				log.error(e);
+			}
+		}
+		return null;
+
+	}
+
+	/**
+	 * 一行一行写入文件，一个数组元素一行
+	 */
+	public static void saveFile2Array(String[] array, String savePath, String encode, boolean isOver) {
+		if (array == null || array.length < 1)
+			return;
+		StringBuilder builder = new StringBuilder();
+		for (String string : array) {
+			builder.append(string).append("\r\n");
+		}
+		saveFile4StrCreate(builder.toString(), savePath, encode, isOver);
+	}
+
+	/**
+	 * 一行一行写入文件，一个list元素一行
+	 * 
+	 */
+	public static void saveFile2List(List<String> list, String savePath, String encode, boolean isOver) {
+		if (list == null || list.size() < 1)
+			return;
+		StringBuilder builder = new StringBuilder();
+		for (String string : list) {
+			builder.append(string).append("\r\n");
+		}
+		saveFile4StrCreate(builder.toString(), savePath, encode, isOver);
 	}
 
 }
