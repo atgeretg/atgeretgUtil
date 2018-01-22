@@ -29,6 +29,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import com.atgeretg.util.file.FileUtil;
 
@@ -39,6 +40,7 @@ import com.atgeretg.util.file.FileUtil;
  *
  */
 public class HttpClientenctThrowsUtil {
+	private static Logger logger = Logger.getLogger(HttpClientenctThrowsUtil.class);  
 	private RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(15000).setConnectTimeout(15000)
 			.setConnectionRequestTimeout(15000).build();
 
@@ -111,7 +113,7 @@ public class HttpClientenctThrowsUtil {
 			stringEntity.setContentType("application/x-www-form-urlencoded");
 			httpPost.setEntity(stringEntity);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		return sendHttpPost(httpPost);
 	}
@@ -129,7 +131,7 @@ public class HttpClientenctThrowsUtil {
 	 * @throws ClientProtocolException
 	 */
 	public String sendHttpPost(String httpUrl, Map<String, String> maps)
-			throws ClientProtocolException, UnknownHostException, ParseException, IOException,Exception {
+			throws ClientProtocolException, UnknownHostException, ParseException, IOException, Exception {
 		HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
 		// 创建参数队列
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -140,7 +142,7 @@ public class HttpClientenctThrowsUtil {
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, encode));
 		} catch (Exception e) {
 			throw e;
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 		return sendHttpPost(httpPost);
 	}
@@ -187,7 +189,7 @@ public class HttpClientenctThrowsUtil {
 	 * @throws ParseException
 	 */
 	private String sendHttpPost(HttpPost httpPost)
-			throws ClientProtocolException, java.net.UnknownHostException, IOException, ParseException{
+			throws ClientProtocolException, java.net.UnknownHostException, IOException, ParseException {
 		CloseableHttpClient httpClient = null;
 		CloseableHttpResponse response = null;
 		HttpEntity entity = null;
@@ -212,7 +214,7 @@ public class HttpClientenctThrowsUtil {
 					httpClient.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return responseContent;
@@ -285,7 +287,7 @@ public class HttpClientenctThrowsUtil {
 					httpClient.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return responseContent;
@@ -330,7 +332,7 @@ public class HttpClientenctThrowsUtil {
 					httpClient.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		return responseContent;

@@ -22,20 +22,22 @@ public class SplitArrayUtil<T>{
 
 		// Object[] objectArray = (Object[]) array;
 		List<T[]> stringList = new ArrayList<>();
-		if (array.length < subSize) {
+		if (array == null || subSize < 1)
+			return stringList;
+		int arrayLength = array.length;
+		if (arrayLength <= subSize) {
 			// 指定大小大于源数组大小，直接保存源数组
 			stringList.add(array);
 			return stringList;
 		}
-		if (array == null || subSize < 1)
-			return stringList;
-		int multi = array.length / subSize;
-		int j = array.length % subSize == 0 ? multi : multi + 1;
+		
+		int multi = arrayLength / subSize;
+		int j = arrayLength % subSize == 0 ? multi : multi + 1;
 		T[] splitTemp = (T[])java.lang.reflect.Array.
 				newInstance(array.getClass().getComponentType(), subSize);
 		int length = 0;
 		for (int ii = 0; ii < j; ii++) {
-			length = array.length - ii * subSize;
+			length = arrayLength - ii * subSize;
 			if (splitTemp.length < length)
 				length = splitTemp.length;
 			splitTemp =  (T[])java.lang.reflect.Array.
