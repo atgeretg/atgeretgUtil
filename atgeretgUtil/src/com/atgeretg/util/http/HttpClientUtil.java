@@ -1,7 +1,6 @@
 package com.atgeretg.util.http;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,20 +44,19 @@ public class HttpClientUtil {
 
 	private HttpClientUtil() {
 	}
-	
-	
-	
+
 	public static void main(String[] args) {
-		String pathGet = "http://47.52.227.171:8080/myDownload/DownloadServlet?download=";//%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar";
-//		String name = pathGet.split("download=")[1];
-//		String decoderString = UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
-//		String decoderString2 = UrlUtil.getURLDecoderString(name);
-		HttpClientUtil.getInstance().httpDownload(pathGet+UrlUtil.getURLEncoderString("商品上架1-15.jar",2),"E:\\tool.jar");
-		
-//		System.out.println(decoderString + "\ndecoderString2 = "  +decoderString2);
-//		pathGet+"商品上架1-15.jar";
+		String pathGet = "http://47.52.227.171:8080/myDownload/DownloadServlet?download=";// %25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar";
+		// String name = pathGet.split("download=")[1];
+		// String decoderString =
+		// UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
+		// String decoderString2 = UrlUtil.getURLDecoderString(name);
+		HttpClientUtil.getInstance().httpDownload(pathGet + UrlUtil.getURLEncoderString("商品上架1-15.jar", 2),
+				"E:\\tool.jar");
+
+		// System.out.println(decoderString + "\ndecoderString2 = " +decoderString2);
+		// pathGet+"商品上架1-15.jar";
 	}
-	
 
 	public static HttpClientUtil getInstance() {
 		if (instance == null) {
@@ -284,23 +282,25 @@ public class HttpClientUtil {
 
 	/**
 	 * 下载文件
+	 * 
 	 * @param url
+	 *            网络URL
 	 * @param savePath
+	 *            保存文件路径（要全路径，即包括文件名，路径不存在会被创建）
+	 * @return null | 保存的文件路径
 	 */
-	public void httpDownload(String url,String savePath) {
-//		RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(5000) // 设置连接超时时间
-//				.setConnectionRequestTimeout(5000) // 设置请求超时时间
-//				.setSocketTimeout(5000).setRedirectsEnabled(true)// 默认允许自动重定向
-//				.build();
+	public String httpDownload(String url, String savePath) {
+		
+		String fileSavePath = null;
 		HttpGet httpGet2 = new HttpGet(url);
 		httpGet2.setConfig(requestConfig);
 		OutputStream os = null;
 		InputStream is = null;
 		try {
-
 			HttpResponse response = HttpClients.createDefault().execute(httpGet2);
 			is = response.getEntity().getContent();
 			File file = FileUtil.reNameFile(savePath);
+			fileSavePath = file.getAbsolutePath();
 			if (!file.exists()) {
 				file.createNewFile();
 			}
@@ -315,7 +315,7 @@ public class HttpClientUtil {
 				os.write(bytes);
 			}
 			os.flush();
-
+			return fileSavePath;
 		} catch (ClientProtocolException e) {
 			logger.error(e);
 		} catch (IOException e) {
@@ -336,7 +336,7 @@ public class HttpClientUtil {
 				}
 			}
 		}
-
+		return null;
 	}
 
 }

@@ -2,7 +2,9 @@ package com.atgeretg.util.arrary;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.atgeretg.util.file.FileUtil;
 
@@ -47,9 +49,20 @@ public class ListUtil {
 		return java.util.Arrays.asList(strArray);
 	}
 
+	/**
+	 * 将一个list集合分割若干个指定的大小的的list集合 list为null或size<1,返回空的list<br>
+	 * 可以直接调用 new SplitListUtil<String>().splitList(list, subSize)
+	 * @param list
+	 *            源集合
+	 * @param subSize
+	 *            每个小的集合大小
+	 * @return
+	 */
 	public static List<List<String>> splitList(List<String> list, int subSize) {
 		return new SplitListUtil<String>().splitList(list, subSize);
 	}
+	
+	
 
 	public static void main(String[] args) {
 		String path = "E:\\jfsc\\pageNum1.txt";
@@ -57,12 +70,12 @@ public class ListUtil {
 		String[] split = string.split(",");
 		List<String> array2List = array2List(split);
 		System.out.println(array2List.size());
-		List<List<String>> splitList =(List<List<String>>)splitList(array2List, 5);
+		List<List<String>> splitList = (List<List<String>>) splitList(array2List, 5);
 		System.out.println(splitList.size());
-//		for(int i = 0; i < 500; i++) {
-//			System.out.print(i+",");
-//		}
-//		System.out.println();
+		// for(int i = 0; i < 500; i++) {
+		// System.out.print(i+",");
+		// }
+		// System.out.println();
 		for (List<String> list : splitList) {
 			for (String string2 : list) {
 				System.out.println(string2);
@@ -80,8 +93,9 @@ public class ListUtil {
 	public static List<String> getDiffrent(List<String> list1, List<String> list2) {
 		// long st = System.nanoTime();
 		List<String> diff = new ArrayList<String>();
+		Set<String> set = new HashSet<>(list2);//contains用hash计算会比较快，是list的10倍左右
 		for (String str : list1) {
-			if (!list2.contains(str)) {
+			if (!set.contains(str)) {
 				diff.add(str);
 			}
 		}
@@ -99,8 +113,9 @@ public class ListUtil {
 	public static List<String> getLike(List<String> list1, List<String> list2) {
 		// long st = System.nanoTime();
 		List<String> diff = new ArrayList<String>();
+		Set<String> set = new HashSet<>(list2);//contains用hash计算会比较快，是list的10倍左右
 		for (String str : list1) {
-			if (list2.contains(str)) {
+			if (set.contains(str)) {
 				diff.add(str);
 			}
 		}
