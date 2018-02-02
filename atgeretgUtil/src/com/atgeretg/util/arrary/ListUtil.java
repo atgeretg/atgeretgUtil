@@ -94,7 +94,9 @@ public class ListUtil {
 		// long st = System.nanoTime();
 		List<String> diff = new ArrayList<String>();
 		Set<String> set = new HashSet<>(list2);//contains用hash计算会比较快，是list的10倍左右
-		for (String str : list1) {
+		String str;
+		for (int i = 0; i < list1.size(); i++) {//这个效率高
+			str = list1.get(i);
 			if (!set.contains(str)) {
 				diff.add(str);
 			}
@@ -114,7 +116,9 @@ public class ListUtil {
 		// long st = System.nanoTime();
 		List<String> diff = new ArrayList<String>();
 		Set<String> set = new HashSet<>(list2);//contains用hash计算会比较快，是list的10倍左右
-		for (String str : list1) {
+		String str;
+		for (int i = 0; i < list1.size(); i++) {//这个效率高
+			str = list1.get(i);
 			if (set.contains(str)) {
 				diff.add(str);
 			}
