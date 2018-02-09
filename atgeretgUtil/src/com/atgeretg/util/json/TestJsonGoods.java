@@ -6,7 +6,7 @@ import com.atgeretg.util.date.DateUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DjGoods {
+public class TestJsonGoods {
 	// Fields
 	@JsonProperty("gd_id")
 	private Integer gdId;
@@ -41,11 +41,11 @@ public class DjGoods {
 	// Constructors
 
 	/** default constructor */
-	public DjGoods() {
+	public TestJsonGoods() {
 	}
 
 	/** full constructor */
-	public DjGoods(String gdCode, Timestamp gdDate, String gdName, Double gdCost, Double gdInCost, Double gdBai,
+	public TestJsonGoods(String gdCode, Timestamp gdDate, String gdName, Double gdCost, Double gdInCost, Double gdBai,
 			Double gdHong, Double gdHuang, Integer gdPayNum, Integer gdBlNum, Timestamp gdInDate, Timestamp gdOutDate,
 			Integer gdState, String gdBsCode, Integer gdUpdateCode, String gdNumber) {
 		this.gdCode = gdCode;

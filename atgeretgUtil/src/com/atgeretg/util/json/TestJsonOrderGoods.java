@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * DjOrderGoods entity
  */
 
-public class DjOrderGoods implements java.io.Serializable {
+public class TestJsonOrderGoods implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Integer ogId;
@@ -35,11 +35,11 @@ public class DjOrderGoods implements java.io.Serializable {
 	// Constructors
 
 	/** default constructor */
-	public DjOrderGoods() {
+	public TestJsonOrderGoods() {
 	}
 
 	/** full constructor */
-	public DjOrderGoods(Timestamp ogDate, String ogOdCode, String ogGdCode, String ogGdName, Double ogGdCost,
+	public TestJsonOrderGoods(Timestamp ogDate, String ogOdCode, String ogGdCode, String ogGdName, Double ogGdCost,
 			Double ogGdInCost, Double ogGdBai, Double ogGdHong, Double ogGdHuang, Integer ogGdNum, Double ogGdMaxCost,
 			Integer ogUId, Integer ogState) {
 		this.ogDate = ogDate;
