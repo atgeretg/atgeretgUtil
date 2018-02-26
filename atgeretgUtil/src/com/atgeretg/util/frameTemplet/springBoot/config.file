@@ -1,0 +1,253 @@
+//application-test.properties(文件-file)
+#Mybatis Generator configuration
+project = src/main/java
+#classPath=E:/workplace/EKSP/WebContent/WEB-INF/lib/ojdbc14.jar
+jdbc_driver = com.mysql.jdbc.Driver
+jdbc_url=jdbc:mysql://127.0.0.1:3306/wrbldService?characterEncoding=utf-8&useSSL=false
+jdbc_user=root
+jdbc_password=atgeretg123
+
+//generatorConfig.xml(文件-file)
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="application-test.properties"/>
+
+    <!-- 指定数据连接驱动jar地址 -->
+   <!-- <classPathEntry location="${classPath}" />-->
+
+    <!-- 一个数据库一个context -->
+    <context id="infoGuardian" targetRuntime="MyBatis3"> <!--targetRuntime="MyBatis3"-->
+        <!-- 注释 -->
+        <commentGenerator >
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳-->
+        </commentGenerator>
+
+        <!-- jdbc连接 -->
+        <jdbcConnection driverClass="${jdbc_driver}"
+                        connectionURL="${jdbc_url}" userId="${jdbc_user}"
+                        password="${jdbc_password}" />
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+           NUMERIC 类型解析为java.math.BigDecimal -->
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="com.djotimes.nobodyService.entity"
+                            targetProject="${project}" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成mapxml文件 -->
+        <sqlMapGenerator targetPackage="com.djotimes.nobodyService.mapper"
+                         targetProject="${project}" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 生成mapxml对应client，也就是接口dao -->
+        <javaClientGenerator targetPackage="com.djotimes.nobodyService.mapper"
+                             targetProject="${project}" type="XMLMAPPER" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+        </javaClientGenerator>
+
+
+        <!-- 指定数据库表,不要重复生成,如果重复xml会叠加，从而导致出错,java文件被会覆盖 -->
+        <!--<table schema="test" tableName="school" domainObjectName="School"></table>-->
+        <table tableName="dj_user" ></table>
+        <table tableName="dj_admin" ></table>
+        <table tableName="dj_business" ></table>
+        <table tableName="dj_delete_temp" ></table>
+        <table tableName="dj_door_record" ></table>
+        <table tableName="dj_download" ></table>
+        <table tableName="dj_exhibit_goods" ></table>
+        <table tableName="dj_goods" ></table>
+        <table tableName="dj_goods_type" ></table>
+        <table tableName="dj_goods_type_sub" ></table>
+        <table tableName="dj_heartbeat" ></table>
+        <table tableName="dj_manage_log" ></table>
+        <table tableName="dj_move_goods" ></table>
+        <table tableName="dj_open" ></table>
+        <table tableName="dj_order" ></table>
+        <table tableName="dj_order_goods" ></table>
+        <table tableName="dj_order_rfid" ></table>
+        <table tableName="dj_rfid_rel" ></table>
+        <table tableName="dj_run_business" ></table>
+        <table tableName="dj_stock_goods" ></table>
+        <table tableName="dj_supplier" ></table>
+        <table tableName="dj_uid" ></table>
+        <table tableName="region" ></table>
+        <!--<table tableName="alipay" ></table>
+        <table tableName="dj_apply_log" ></table>
+        <table tableName="dj_business_center" ></table>
+        <table tableName="dj_alipay" ></table>
+        <table tableName="dj_goods_test" ></table>
+        <table tableName="dj_pandian" ></table>
+        <table tableName="dj_poundage" ></table>
+        <table tableName="dj_redpacket" ></table>
+        <table tableName="dj_refundMoney" ></table>
+        <table tableName="dj_turnable" ></table>
+        <table tableName="dj_warning" ></table>
+        <table tableName="dj_winner" ></table>
+        <table tableName="menu" ></table>
+        <table tableName="sms" ></table>
+        <table tableName="test" ></table>
+        <table tableName="wx_pay" ></table>
+        <table tableName="wx_pay_log" ></table>-->
+
+        <!-- 配置表信息 -->
+      <!--  <table schema="${jdbc_user}" tableName="s_user"
+               domainObjectName="UserEntity" enableCountByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false">
+            &lt;!&ndash; schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
+                是否生成 example类   &ndash;&gt;
+
+            &lt;!&ndash; 忽略列，不生成bean 字段 &ndash;&gt;
+            <ignoreColumn column="FRED" />
+            &lt;!&ndash; 指定列的java数据类型 &ndash;&gt;
+            <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+        </table>-->
+
+    </context>
+</generatorConfiguration>
+
+//GeneratorTest(文件-file)
+
+package com.djotimes.nobodyService;
+
+
+import org.junit.Test;
+import org.mybatis.generator.api.MyBatisGenerator;
+import org.mybatis.generator.config.Configuration;
+import org.mybatis.generator.config.xml.ConfigurationParser;
+import org.mybatis.generator.internal.DefaultShellCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GeneratorTest {
+    @Test
+    public void generator() throws Exception {
+
+        List<String> warnings = new ArrayList<String>();
+        boolean overwrite = true;
+        //指定逆向工程配置文件
+        File configFile = new File("E:\\project\\interlli\\ideaProjects\\nobodyServiceTest\\src\\main\\resources\\generatorConfig.xml");
+        ConfigurationParser cp = new ConfigurationParser(warnings);
+        Configuration config = cp.parseConfiguration(configFile);
+        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config,
+                callback, warnings);
+        myBatisGenerator.generate(null);
+
+    }
+
+    private static String driver = "com.mysql.jdbc.Driver";
+    //    @Value("jdbc_url")
+    private static String url = "jdbc:mysql://127.0.0.1:3306/wrbldService?characterEncoding=utf-8";
+    //    @Value("jdbc_user")
+    private static String user = "root";
+    //    @Value("jdbc_password")
+    private static String pass = "atgeretg123";
+
+    static Connection conn = null;
+    static Statement statement = null;
+    static PreparedStatement ps = null;
+    static ResultSet rs = null;
+
+    //    static List<String> tables = new ArrayList<String>();
+    public static void startMySQLConn() {
+        try {
+            Class.forName(driver).newInstance();
+            conn = DriverManager.getConnection(url, user, pass);
+            if (!conn.isClosed()) {
+                System.out.println("Succeeded connecting to MySQL!");
+            }
+
+            statement = conn.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void closeMySQLConn() {
+        if (conn != null) {
+            try {
+                conn.close();
+                System.out.println("Database connection terminated!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static List<String> getTables() {
+        String sql = "show tables;";
+        List<String> tables = new ArrayList<String>();
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                tables.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return tables;
+    }
+
+    public static long getDbSum(List<String> tables) {
+        long sum = 0;
+        String sql = "select count(*) from ";
+        try {
+            for (String tblName : tables) {
+                ps = conn.prepareStatement(sql + tblName + ";");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    sum += rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sum;
+    }
+
+    static Logger logger = LoggerFactory.getLogger(GeneratorTest.class);
+
+    public void creadTable() {
+        startMySQLConn();
+        List<String> tables = getTables();
+        for (String table: tables) {
+            System.out.println("<table tableName=\""+table+"\" ></table>");
+//            logger.info("<table tableName=\"{}\" ></table>",table);
+        }
+//        System.out.println(getDbSum());
+        closeMySQLConn();
+    }
+
+}
+
+
+
