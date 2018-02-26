@@ -328,6 +328,7 @@ public class FileUtil {
 			}
 		}
 	}
+	
 
 	/**
 	 * 文件名相同时，重新命名，“方式：xxx---变---xxx(i)”，i是int型自增数，并返回一个File对象，也可用于生成创建一个文件

@@ -229,6 +229,20 @@ public class StrUtil {
 		}
 		return builder.toString();
 	}
+	
+	/**
+	 * 数组中是否包含某字符，包含返回true
+	 * @param arr
+	 * @param targetValue
+	 * @return true | false
+	 */
+	public static boolean strArrContains(String[] arr, String targetValue) {
+	    for(String s : arr){
+	        if(s.equals(targetValue))
+	            return true;
+	    }
+	    return false;
+	}
 
 	/**
 	 * 如果字符串没有超过最长显示长度返回原字符串，否则从开头截取指定长度并加...返回。
