@@ -9,14 +9,15 @@ import com.atgeretg.util.file.FileUtil;
 import com.atgeretg.util.string.StrUtil;
 
 /**
- * 用该框架前，必需要用generatorConfiguration工具生成mapper接口
+ * 生成SpringBoot大体框架<br>
+ * 用该类生成框架前，必需要用generatorConfiguration工具生成mapper接口
  * 
  * @author atgeretg
  *
  */
-public class CreateMVC {
-	static String filePath;
-	static final String mapperStr = "Mapper", Example = "Example", Service = "Service", baseService = "BaseService",
+public class CreateSBF {
+	private static String filePath;
+	private static final String mapperStr = "Mapper", Example = "Example", Service = "Service", baseService = "BaseService",
 			baseMapper = "MapperBase", impl = "impl",Impl = "Impl", controller = "Controller", baseController = "BaseController",
 			dataSource = "dataSource", DBConfigMain = "DBConfigMain", MyBatisConfigMain = "MyBatisConfigMain",
 			java = ".java";
@@ -35,9 +36,9 @@ public class CreateMVC {
 	private static String encode = FileUtil.UTF8;
 	// private String basePackage;
 	private static String serversImplPackage;
-	public static String ingoredService[] = {};// 过虑的service不用生成
-	public static String ingoredController[] = {};// 过虑的controller不用生成
-	public static String ingoredMapper[] = {};// 过虑的mapper不用处理
+	private static String ingoredService[] = {};// 过虑的service不用生成
+	private static String ingoredController[] = {};// 过虑的controller不用生成
+	private static String ingoredMapper[] = {};// 过虑的mapper不用处理
 
 	/**
 	 * 只输入基础包名，其它结构自动生成,<br>
@@ -45,27 +46,35 @@ public class CreateMVC {
 	 * controller层：com.djotimes.nobodyService.controller<br>
 	 * entity层（默认）：com.djotimes.nobodyService.entity）
 	 * 
-	 * @param basePackage
+	 * @param basePackage 基础包名
 	 * @param entity
 	 *            如果实体类层名不是叫"entity"，则必需填写实体类的包名，如实体类包名叫“model”则写“model”
 	 */
-	public CreateMVC(String basePackage, String entity) {
+	public CreateSBF(String basePackage, String entity) {
 		basePackage = lastStrIsDot(basePackage, true);
-		CreateMVC.entityControllerPackage = basePackage + controller.toLowerCase();
-		CreateMVC.entityServersPackage = basePackage + Service.toLowerCase();
-		CreateMVC.entityPackage = basePackage + (entity == null ? "entity" : entity);
-		CreateMVC.mapperPackage = basePackage + mapperStr.toLowerCase();
-		CreateMVC.dataSourcePackage = basePackage + dataSource;
+		CreateSBF.entityControllerPackage = basePackage + controller.toLowerCase();
+		CreateSBF.entityServersPackage = basePackage + Service.toLowerCase();
+		CreateSBF.entityPackage = basePackage + (entity == null ? "entity" : entity);
+		CreateSBF.mapperPackage = basePackage + mapperStr.toLowerCase();
+		CreateSBF.dataSourcePackage = basePackage + dataSource;
 		initParamName();
 	}
-
-	public CreateMVC(String entityControllerPackage, String entityServersPackage, String entityPackage,
+	
+	/**
+	 * 指定包名生成springBoot框架结构
+	 * @param entityControllerPackage controller层包名
+	 * @param entityServersPackage service层包名
+	 * @param entityPackage entity(实体类)层包名
+	 * @param mapperPackage mapper层包名
+	 * @param dataSourcePackage 数据源配置层包名
+	 */
+	public CreateSBF(String entityControllerPackage, String entityServersPackage, String entityPackage,
 			String mapperPackage, String dataSourcePackage) {
-		CreateMVC.entityControllerPackage = entityControllerPackage;
-		CreateMVC.entityServersPackage = entityServersPackage;
-		CreateMVC.entityPackage = entityPackage;
-		CreateMVC.mapperPackage = mapperPackage;
-		CreateMVC.dataSourcePackage = dataSourcePackage;
+		CreateSBF.entityControllerPackage = entityControllerPackage;
+		CreateSBF.entityServersPackage = entityServersPackage;
+		CreateSBF.entityPackage = entityPackage;
+		CreateSBF.mapperPackage = mapperPackage;
+		CreateSBF.dataSourcePackage = dataSourcePackage;
 		initParamName();
 	}
 
@@ -116,6 +125,20 @@ public class CreateMVC {
 		}
 		return entityBuffer.toString();
 	}
+	
+	/**
+	 * 指定扫描的mapper包下的类进行生成，springBoot框架,生成文件的字符编码UTF-8,首次生成
+	 * 
+	 * @param filePath
+	 *            文件硬盘路径（到src文件夹就好了，不用到具体的java包处,<br>
+	 *            如果是interlli工具则路径应为：“E:\\project\\interlli\\ideaProjects\\nobodyService\\src\\main\\java”<br>
+	 *            如果是eclipse工具则路径应为：“E:\\project\\desk\\nobodyService\\src”）
+	 * @param scanPackage
+	 *            扫描的mapper包名
+	 */
+	public void createClass(String filePath, String scanPackage) {
+		createClass(filePath, scanPackage, CreateSBF.encode, null, null, null,true);
+	}
 
 	/**
 	 * 指定扫描的mapper包下的类进行生成，springBoot框架
@@ -159,15 +182,15 @@ public class CreateMVC {
 			String ingoredController[], String ingoredMapper[],boolean first) {
 		if (StrUtil.isEmptyNull(filePath))
 			System.out.println("生成文件硬盘路径不能为空");
-		CreateMVC.filePath = filePath + File.separatorChar;
+		CreateSBF.filePath = filePath + File.separatorChar;
 		if (encode != null)
-			CreateMVC.encode = encode;
+			CreateSBF.encode = encode;
 		if (ingoredService != null)
-			CreateMVC.ingoredService = ingoredService;
+			CreateSBF.ingoredService = ingoredService;
 		if (ingoredController != null)
-			CreateMVC.ingoredController = ingoredController;
+			CreateSBF.ingoredController = ingoredController;
 		if (ingoredMapper != null)
-			CreateMVC.ingoredMapper = ingoredMapper;
+			CreateSBF.ingoredMapper = ingoredMapper;
 		List<String> classNames = getClassName(scanPackage);
 		StringBuffer baseServersParamBuffer = new StringBuffer();
 		StringBuffer baseControllerParamBuffer = new StringBuffer();
@@ -196,8 +219,8 @@ public class CreateMVC {
 			baseControllerParamBuffer.append(baseControllerGlobalParam);
 			// 生成其它
 			reConfMapper(mapperName, entityName, first);
-			createService(CreateMVC.entityPackageDot, entityName);
-			createController(CreateMVC.entityPackageDot, entityName);
+			createService(CreateSBF.entityPackageDot, entityName);
+			createController(CreateSBF.entityPackageDot, entityName);
 			// break;
 			// System.out.println(baseGlobalParam);
 			// System.out.println(mapperName);
@@ -376,7 +399,7 @@ public class CreateMVC {
 
 		String example = entityName + Example;
 		String serviceName = entityName + Service;
-		String serviceImplName = serviceName + "Impl";
+		String serviceImplName = serviceName + Impl;
 		String entityPackage_entityName = entityPackage + entityName;
 		String entityPackage_example = entityPackage + example;
 
@@ -385,7 +408,7 @@ public class CreateMVC {
 				entityPackage_entityName, entityPackage_example, serviceName, entityName, example);
 
 		String classContent = MessageFormat.format(entityServiceClass, serversImplPackage, entityPackage_entityName,
-				entityPackage_example, serviceName, serviceImplName, entityName, example, serviceName, serviceName);
+				entityPackage_example, StrUtil.strFirstToLow(serviceName,true), serviceImplName, entityName, example, serviceName, serviceName);
 		// System.out.println(interfaceContent);
 		// System.out.println(classContent);
 		String interPath = StrUtil.stringBuilder(entityServersPackageDot.replace(".", "/"), serviceName, java);
@@ -440,8 +463,8 @@ public class CreateMVC {
 				"\n" + "import com.atgeretg.util.json.ali.JacksonUtil;\n" + "import %s;\n" + // com.djotimes.nobodyService.service.*
 				"import org.springframework.beans.factory.annotation.Autowired;\n" + "\n"
 				+ "import java.util.HashMap;\n" + "import java.util.List;\n" + "import java.util.Map;\n" + "\n"
-				+ "public class BaseController<T> {\n" + "\n" + "    \n"
-				+ "    //private GoodsService goodsService;\n" + "%s\n" + "    \n"
+				+ "public class BaseController<T> {\n" + "    \n"
+				+ "    \n" + "%s\n" + "    \n"
 				+ "    // 用来装有将要被打包成json格式返回给前台的数据，下面要实现get方法\n" + "    protected List<T> jsonList = null;\n"
 				+ "    protected Map<String, Object> jsonMap;\n" + "\n"
 				+ "    protected String statusMap(boolean success, String msg, Object data) {\n"
@@ -576,7 +599,7 @@ public class CreateMVC {
 	 * @param targetValue
 	 * @return true | false
 	 */
-	public boolean strArrContains(String[] arr, String targetValue) {
+	private boolean strArrContains(String[] arr, String targetValue) {
 		return StrUtil.strArrContains(arr, targetValue);
 	}
 
@@ -600,8 +623,10 @@ public class CreateMVC {
 		}
 
 	}
+	
+	
 
-	public List<String> getClassName(String packageName) {
+	private List<String> getClassName(String packageName) {
 		String filePath = ClassLoader.getSystemResource("").getPath() + packageName.replace(".", "/");
 		List<String> fileNames = getClassName(filePath, null);
 		return fileNames;

@@ -204,11 +204,13 @@ public class DateUtil {
 	}
 
 	/**
+	 * 1977年1月1日   在  2017年1年1 之前 是正确的
 	 * 为了知道Date的before是那个时间段而写<br>
+	 * DateUtil.formatStr2date("1977-1-1").before(DateUtil.formatStr2date("2017-1-1")) ==> true<br> 
 	 * while (date.before(DateUtil.formatStr2date("2017-1-1"))) {等待...}
 	 * 
-	 * @param date
-	 * @param when
+	 * @param date 要确认的时间（"1977-1-1"）
+	 * @param when 和哪个时间比（"2017-1-1"）
 	 * @return
 	 */
 	public static boolean before(Date date, Date when) {
@@ -1319,6 +1321,21 @@ public class DateUtil {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.add(Calendar.MINUTE, minute);
+		return calendar.getTime();
+	}
+	
+	/**
+	 * 功能：指定日期加上指定小时数，minute为负数表示减<br>
+	 * 功能：分钟相差 hour的时间值
+	 * 
+	 * @param date
+	 * @param hours
+	 * @return
+	 */
+	public static Date getDateByHourAdd(Date date, int hours) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR, hours);
 		return calendar.getTime();
 	}
 

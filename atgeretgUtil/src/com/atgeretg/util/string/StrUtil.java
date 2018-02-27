@@ -48,7 +48,7 @@ public class StrUtil {
 
 //	 public static void main(String[] args) {
 //		 String[] split = "1459394,1459395,1459403,1692515,1692531,1692537,1692542,1692546,1705181,1705183,1705186,1705187,1705191,1883327".split(",");
-//	 System.out.println(array2String(split,","));
+//	 System.out.println(strFirstToLow("dd",true));
 //	 }
 
 	/**
@@ -243,6 +243,46 @@ public class StrUtil {
 	    }
 	    return false;
 	}
+	
+	/**
+	 * 最后一个字符串要不要点
+	 *
+	 * @param string 传入字符串
+	 * @param need
+	 *            需不需要点
+	 * return 传入的字符串，加上点或去除点
+	 */
+	public static String strLastHaveDot(String string, boolean need) {
+		boolean have = (".".equals(string.substring(string.length() - 1)));
+		if (need) {// 需要点
+			if (have)// 有点
+				return string;
+			return string + ".";
+		} else {
+			if (have)// 有点
+				return string.substring(0, string.length() - 1);
+			return string;
+		}
+
+	}
+	
+	/**
+	 * 字符串第一个字符是不是要转成小写
+	 *
+	 * @param string 传入字符串
+	 * @param is
+	 *           是不是要转成小写（false转成大写）
+	 *            return 传入的字符串的转换结果
+	 */
+	public static String strFirstToLow(String string, boolean is) {
+		String nameFirst = "";
+		if(is)
+			nameFirst = string.substring(0, 1).toLowerCase();
+		else
+			nameFirst = string.substring(0, 1).toUpperCase();
+		String nameLast = string.substring(1);
+		return nameFirst+nameLast;
+	}	
 
 	/**
 	 * 如果字符串没有超过最长显示长度返回原字符串，否则从开头截取指定长度并加...返回。
