@@ -17,10 +17,10 @@ import com.atgeretg.util.string.StrUtil;
  */
 public class CreateSBF {
 	private static String filePath;
-	private static final String mapperStr = "Mapper", Example = "Example", Service = "Service", baseService = "BaseService",
-			baseMapper = "MapperBase", impl = "impl",Impl = "Impl", controller = "Controller", baseController = "BaseController",
-			dataSource = "dataSource", DBConfigMain = "DBConfigMain", MyBatisConfigMain = "MyBatisConfigMain",
-			java = ".java";
+	private static final String mapperStr = "Mapper", Example = "Example", Service = "Service",
+			baseService = "BaseService", baseMapper = "MapperBase", impl = "impl", Impl = "Impl",
+			controller = "Controller", baseController = "BaseController", dataSource = "dataSource",
+			DBConfigMain = "DBConfigMain", MyBatisConfigMain = "MyBatisConfigMain", java = ".java";
 	private static String entityControllerPackage;
 	private static String entityServersPackage;
 	private static String entityPackage;
@@ -46,7 +46,8 @@ public class CreateSBF {
 	 * controller层：com.djotimes.nobodyService.controller<br>
 	 * entity层（默认）：com.djotimes.nobodyService.entity）
 	 * 
-	 * @param basePackage 基础包名
+	 * @param basePackage
+	 *            基础包名
 	 * @param entity
 	 *            如果实体类层名不是叫"entity"，则必需填写实体类的包名，如实体类包名叫“model”则写“model”
 	 */
@@ -59,14 +60,20 @@ public class CreateSBF {
 		CreateSBF.dataSourcePackage = basePackage + dataSource;
 		initParamName();
 	}
-	
+
 	/**
 	 * 指定包名生成springBoot框架结构
-	 * @param entityControllerPackage controller层包名
-	 * @param entityServersPackage service层包名
-	 * @param entityPackage entity(实体类)层包名
-	 * @param mapperPackage mapper层包名
-	 * @param dataSourcePackage 数据源配置层包名
+	 * 
+	 * @param entityControllerPackage
+	 *            controller层包名
+	 * @param entityServersPackage
+	 *            service层包名
+	 * @param entityPackage
+	 *            entity(实体类)层包名
+	 * @param mapperPackage
+	 *            mapper层包名
+	 * @param dataSourcePackage
+	 *            数据源配置层包名
 	 */
 	public CreateSBF(String entityControllerPackage, String entityServersPackage, String entityPackage,
 			String mapperPackage, String dataSourcePackage) {
@@ -125,7 +132,7 @@ public class CreateSBF {
 		}
 		return entityBuffer.toString();
 	}
-	
+
 	/**
 	 * 指定扫描的mapper包下的类进行生成，springBoot框架,生成文件的字符编码UTF-8,首次生成
 	 * 
@@ -137,7 +144,7 @@ public class CreateSBF {
 	 *            扫描的mapper包名
 	 */
 	public void createClass(String filePath, String scanPackage) {
-		createClass(filePath, scanPackage, CreateSBF.encode, null, null, null,true);
+		createClass(filePath, scanPackage, CreateSBF.encode, null, null, null, true);
 	}
 
 	/**
@@ -154,8 +161,8 @@ public class CreateSBF {
 	 * @param first
 	 *            是不是首次生成
 	 */
-	public void createClass(String filePath, String scanPackage, String encode,boolean first) {
-		createClass(filePath, scanPackage, encode, null, null, null,first);
+	public void createClass(String filePath, String scanPackage, String encode, boolean first) {
+		createClass(filePath, scanPackage, encode, null, null, null, first);
 	}
 
 	/**
@@ -176,10 +183,10 @@ public class CreateSBF {
 	 * @param ingoredMapper
 	 *            过虑的mapper不用处理
 	 * @param first
-	           是不是首次生成
+	 *            是不是首次生成
 	 */
 	public void createClass(String filePath, String scanPackage, String encode, String ingoredService[],
-			String ingoredController[], String ingoredMapper[],boolean first) {
+			String ingoredController[], String ingoredMapper[], boolean first) {
 		if (StrUtil.isEmptyNull(filePath))
 			System.out.println("生成文件硬盘路径不能为空");
 		CreateSBF.filePath = filePath + File.separatorChar;
@@ -218,7 +225,8 @@ public class CreateSBF {
 					nameFirst + nameLast, ";\n");
 			baseControllerParamBuffer.append(baseControllerGlobalParam);
 			// 生成其它
-			reConfMapper(mapperName, entityName, first);
+			if (first)// 只有第一次才进入
+				reConfMapper(mapperName, entityName);
 			createService(CreateSBF.entityPackageDot, entityName);
 			createController(CreateSBF.entityPackageDot, entityName);
 			// break;
@@ -265,14 +273,14 @@ public class CreateSBF {
 	 * @param entityName
 	 * @param first
 	 */
-	private void reConfMapper(String mapperName, String entityName, boolean first) {
+	private void reConfMapper(String mapperName, String entityName) {
 		if (strArrContains(ingoredMapper, entityName))// 包含过虑的则不处理
 			return;
 		String classPath = StrUtil.stringBuilder(mapperPackageDot.replace(".", "/"), mapperName, java);
 		File file = new File(filePath + classPath);
+		// if (!first && file.exists())
+		// return;
 		System.out.println(file.getPath());
-		if (!first && file.exists())
-			return;
 		// String content = FileUtil.readFile2str(file, encode);
 		// String[] split = content.split("interface");
 		String extendStr = "package {0};\n" + "\n" + "import {1};\n" + "import {2};\n" + "\n"
@@ -289,9 +297,8 @@ public class CreateSBF {
 	 * @param baseGlobalParam
 	 */
 	private void createBaseService(String baseGlobalParam) {
-		String baseClassTemplate = "package %s;\n" + "\n" + "import %s;\n"
-				+ "import %s;\n" + "import org.slf4j.Logger;\n"
-				+ "import org.slf4j.LoggerFactory;\n"
+		String baseClassTemplate = "package %s;\n" + "\n" + "import %s;\n" + "import %s;\n"
+				+ "import org.slf4j.Logger;\n" + "import org.slf4j.LoggerFactory;\n"
 				+ "import org.springframework.beans.factory.annotation.Autowired;\n" + "\n"
 				+ "import javax.annotation.PostConstruct;\n" + "import java.lang.reflect.Field;\n"
 				+ "import java.lang.reflect.ParameterizedType;\n" + "import java.util.List;\n" + "\n"
@@ -408,21 +415,28 @@ public class CreateSBF {
 				entityPackage_entityName, entityPackage_example, serviceName, entityName, example);
 
 		String classContent = MessageFormat.format(entityServiceClass, serversImplPackage, entityPackage_entityName,
-				entityPackage_example, StrUtil.strFirstToLow(serviceName,true), serviceImplName, entityName, example, serviceName, serviceName);
+				entityPackage_example, StrUtil.strFirstToLow(serviceName, true), serviceImplName, entityName, example,
+				serviceName, serviceName);
 		// System.out.println(interfaceContent);
 		// System.out.println(classContent);
 		String interPath = StrUtil.stringBuilder(entityServersPackageDot.replace(".", "/"), serviceName, java);
 		String classPath = StrUtil.stringBuilder((serversImplPackage + ".").replace(".", "/"), serviceImplName, java);
 		File classFile = new File(filePath + classPath);
 		System.out.println(classFile.getPath());
-		if (!classFile.exists())
+		if (!classFile.exists()) {
 			FileUtil.saveFile4Str(classContent, classFile.getPath(), encode, false);
+			System.out.println(creatStr + classFile.getPath());
+		}
 		File interFile = new File(filePath + interPath);
 		System.out.println(interFile.getPath());
-		if (!interFile.exists())
+		if (!interFile.exists()) {
 			FileUtil.saveFile4Str(interfaceContent, interFile.getPath(), encode, false);
+			System.out.println(creatStr + interFile.getPath());
+		}
 
 	}
+
+	private final static String creatStr = "生成 ： ";
 
 	/**
 	 * 生成controller层
@@ -447,10 +461,11 @@ public class CreateSBF {
 		// System.out.println(calssContent);
 		String classPath = StrUtil.stringBuilder(entityControllerPackageDot.replace(".", "/"), contrName, java);
 		File file = new File(filePath + classPath);
-		// System.out.println(file.getPath());
+		System.out.println(file.getPath());
 		if (file.exists())
 			return;
 		FileUtil.saveFile4Str(calssContent, file.getPath(), encode, false);
+		System.out.println(creatStr + file.getPath());
 	}
 
 	/**
@@ -463,8 +478,7 @@ public class CreateSBF {
 				"\n" + "import com.atgeretg.util.json.ali.JacksonUtil;\n" + "import %s;\n" + // com.djotimes.nobodyService.service.*
 				"import org.springframework.beans.factory.annotation.Autowired;\n" + "\n"
 				+ "import java.util.HashMap;\n" + "import java.util.List;\n" + "import java.util.Map;\n" + "\n"
-				+ "public class BaseController<T> {\n" + "    \n"
-				+ "    \n" + "%s\n" + "    \n"
+				+ "public class BaseController<T> {\n" + "    \n" + "    \n" + "%s\n" + "    \n"
 				+ "    // 用来装有将要被打包成json格式返回给前台的数据，下面要实现get方法\n" + "    protected List<T> jsonList = null;\n"
 				+ "    protected Map<String, Object> jsonMap;\n" + "\n"
 				+ "    protected String statusMap(boolean success, String msg, Object data) {\n"
@@ -474,15 +488,14 @@ public class CreateSBF {
 				+ "            jsonMap.put(\"data\", data);\n" + "        return JacksonUtil.toJson(jsonMap);\n"
 				+ "    }\n" + "}";
 
-		String classContent = String.format(baseTemplate, controllerBase,
-				entityServersPackageDot + "*", param);
+		String classContent = String.format(baseTemplate, controllerBase, entityServersPackageDot + "*", param);
 		// System.out.println(classContent);
 		String classPath = StrUtil.stringBuilder(controllerBaseDot.replace(".", "/"), baseController, java);
 		File file = new File(filePath + classPath);
-		System.out.println(file.getPath());
 		if (file.exists())
 			return;
 		FileUtil.saveFile4Str(classContent, file.getPath(), encode, false);
+		System.out.println(creatStr + file.getPath());
 	}
 
 	/**
@@ -577,18 +590,22 @@ public class CreateSBF {
 		String dbClassPath = StrUtil.stringBuilder((dataSourcePackageDot + "DB.").replace(".", "/"), DBConfigMain,
 				java);
 		File dbFile = new File(filePath + dbClassPath);
-		// System.out.println(dbFile.getPath());
-		if (!dbFile.exists())
+		System.out.println(dbFile.getPath());
+		if (!dbFile.exists()) {
 			FileUtil.saveFile4Str(dbClassContent, dbFile.getPath(), encode, false);
+			System.out.println(creatStr + dbFile.getPath());
+		}
 		String myBitysClassContent = String.format(myBatisCongTemplate, dataSourcePackage, db + "." + DBConfigMain,
 				mapperPackage, MyBatisConfigMain, DBConfigMain);
 		// System.out.println(myBitysClassContent);
 		String myBitysClassPath = StrUtil.stringBuilder(dataSourcePackageDot.replace(".", "/"), MyBatisConfigMain,
 				java);
 		File myFile = new File(filePath + myBitysClassPath);
-		// System.out.println(myFile.getPath());
-		if (!myFile.exists())
+		System.out.println(myFile.getPath());
+		if (!myFile.exists()) {
 			FileUtil.saveFile4Str(myBitysClassContent, myFile.getPath(), encode, false);
+			System.out.println(creatStr + myFile.getPath());
+		}
 
 	}
 
@@ -623,8 +640,6 @@ public class CreateSBF {
 		}
 
 	}
-	
-	
 
 	private List<String> getClassName(String packageName) {
 		String filePath = ClassLoader.getSystemResource("").getPath() + packageName.replace(".", "/");
