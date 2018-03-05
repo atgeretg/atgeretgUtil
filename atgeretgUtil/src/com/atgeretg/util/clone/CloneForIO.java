@@ -5,6 +5,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.SqlTimestampConverter;
+import org.apache.poi.ss.formula.functions.T;
 
 /**
  * 通IO流进行克隆一个对象
@@ -33,4 +40,24 @@ public class CloneForIO {
 		}
 		return null;
 	}
+	
+	/**
+	 * 对象属性复制，属性要有get和set
+	 * @param clazzDest 对象类型
+	 * @param orig 源数据
+	 * @return
+	 * @throws Exception 
+	 */
+	public static Object copyObjectProperties(Class clazzDest,Object orig) throws Exception{
+		Object n = null;
+        try {
+        	ConvertUtils.register(new SqlTimestampConverter(null), java.sql.Timestamp.class); 
+//        	ConvertUtils.register(new SqlTimestampConverter(null), Date.class); 
+            n =  clazzDest.newInstance();       
+			BeanUtils.copyProperties(n, orig);
+		} catch (Exception e) {
+			throw e;
+		}
+        return n;
+ }
 }
