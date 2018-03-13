@@ -52,7 +52,7 @@ public class CloneForIO {
 		Object n = null;
         try {
         	ConvertUtils.register(new SqlTimestampConverter(null), java.sql.Timestamp.class); 
-//        	ConvertUtils.register(new SqlTimestampConverter(null), Date.class); 
+        	ConvertUtils.register(new SqlTimestampConverter(null), Date.class); 
             n =  clazzDest.newInstance();       
 			BeanUtils.copyProperties(n, orig);
 		} catch (Exception e) {
