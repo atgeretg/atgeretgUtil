@@ -85,6 +85,44 @@ public class NumUtils {
            return false;
     }
     
+    /**
+     * 判断一个Integer是不是null并是不是少于某数
+     *
+     * @param i       Integer
+     * @param lessNum 比较的数
+     * @return
+     */
+    public static boolean isNullLess(Integer i, int lessNum) {
+        if (i == null || i.intValue() < lessNum)
+            return true;
+        return false;
+    }
+
+    /**
+     * 判断一个Double是不是null并是不是少于某数
+     *
+     * @param d       Double
+     * @param lessNum 比较的数
+     * @return
+     */
+    public static boolean isNullLess(Double d, double lessNum) {
+        if (d == null || d.doubleValue() < lessNum)
+            return true;
+        return false;
+    }
+
+    /**
+     * 判断一个Float是不是null并是不是少于某数
+     *
+     * @param f       Float
+     * @param lessNum 比较的数
+     * @return
+     */
+    public static boolean isNullLess(Float f, float lessNum) {
+        if (f == null || f.floatValue() < lessNum)
+            return true;
+        return false;
+    }
     
     /**
 	 * 判断输入字符串是否为科学计数法

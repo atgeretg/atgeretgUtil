@@ -1,9 +1,14 @@
 package com.atgeretg.util.arrary;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class SplitArrayUtil<T>{
+import org.apache.commons.collections.CollectionUtils;
+
+public class ArrayUtilHandle<T>{
 	
 	/**
 	 * 将一个数组分割若干个指定的大小的的数组<br>
@@ -30,7 +35,6 @@ public class SplitArrayUtil<T>{
 			stringList.add(array);
 			return stringList;
 		}
-		
 		int multi = arrayLength / subSize;
 		int j = arrayLength % subSize == 0 ? multi : multi + 1;
 		T[] splitTemp = (T[])java.lang.reflect.Array.
@@ -47,6 +51,39 @@ public class SplitArrayUtil<T>{
 		}
 		return stringList;
 	}
+	
+	
+	/**
+	 * 数组去重,array为null或size<1,返回自身传入的对象,<br/>
+	 * 如果是String数组，会把empty(“""”)去除
+	 * @param array  源数组
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public T[] removeLikeArray(T[] array) {
+		if(array==null||array.length<1) {
+			return array;
+		}
+		Set<T> set = new HashSet<>();
+		boolean remove = false;
+		if(array instanceof String[]) {
+			remove = true;
+		}
+		for(int i = 0; i < array.length;i++) {
+			if(array[i] == null)
+				continue;
+			if(remove && "".equals(array[i])) {
+				continue;
+			}
+			set.add(array[i]);
+		}
+		T[] arr = (T[])java.lang.reflect.Array.
+				newInstance(array.getClass().getComponentType(), set.size());
+		return  set.toArray(arr);
+		
+	}
+	
+	
 //
 //	@SuppressWarnings("unchecked")
 //	private  <T> T[] getGeArray(T[] array, int size) {

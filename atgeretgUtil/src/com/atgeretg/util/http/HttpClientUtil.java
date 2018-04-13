@@ -45,18 +45,18 @@ public class HttpClientUtil {
 	private HttpClientUtil() {
 	}
 
-	public static void main(String[] args) {
-		String pathGet = "http://47.52.227.171:8080/myDownload/DownloadServlet?download=";// %25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar";
-		// String name = pathGet.split("download=")[1];
-		// String decoderString =
-		// UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
-		// String decoderString2 = UrlUtil.getURLDecoderString(name);
-		HttpClientUtil.getInstance().httpDownload(pathGet + UrlUtil.getURLEncoderString("商品上架1-15.jar", 2),
-				"E:\\tool.jar");
-
-		// System.out.println(decoderString + "\ndecoderString2 = " +decoderString2);
-		// pathGet+"商品上架1-15.jar";
-	}
+//	public static void main(String[] args) {
+//		String pathGet = "http://47.52.227.171:8080/myDownload/DownloadServlet?download=";// %25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar";
+//		// String name = pathGet.split("download=")[1];
+//		// String decoderString =
+//		// UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
+//		// String decoderString2 = UrlUtil.getURLDecoderString(name);
+//		HttpClientUtil.getInstance().httpDownload(pathGet + UrlUtil.getURLEncoderString("商品上架1-15.jar", 2),
+//				"E:\\tool.jar");
+//
+//		// System.out.println(decoderString + "\ndecoderString2 = " +decoderString2);
+//		// pathGet+"商品上架1-15.jar";
+//	}
 
 	public static HttpClientUtil getInstance() {
 		if (instance == null) {

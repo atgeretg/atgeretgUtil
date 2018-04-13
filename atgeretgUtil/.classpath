@@ -32,7 +32,7 @@
 	<classpathentry kind="lib" path="lib/json/jsonLib/json-lib-2.4-jdk15.jar"/>
 	<classpathentry kind="lib" path="lib/commons/json/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons/json/commons-beanutils-1.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons/json/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons/json/commons-collections-3.2.1.jar" sourcepath="C:/Users/atgeretg_com/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

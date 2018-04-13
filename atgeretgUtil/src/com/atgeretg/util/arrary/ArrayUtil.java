@@ -1,6 +1,8 @@
 package com.atgeretg.util.arrary;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -12,6 +14,20 @@ import org.apache.commons.lang3.ArrayUtils;
  *
  */
 public class ArrayUtil {
+	
+	public static void main(String[] args) {
+		String s[] = new String[999999]; 
+		for(int i = 0; i < s.length; i++) {
+			s[i]= "i = " + i%8;
+		}
+		long start = System.currentTimeMillis();
+		String[] array = new ArrayUtilHandle<String>().removeLikeArray(s);
+		System.out.println(System.currentTimeMillis() - start);
+		System.out.println(array.length);
+		System.out.println(Arrays.toString(array));
+	}
+	
+//	public static 
 
 	/**
 	 * Integer[]转换成int[],这个也可以直接调用org.apache.commons.lang3.ArrayUtils.toPrimitive()，还其它类型直接调用apache这个方法
@@ -36,7 +52,43 @@ public class ArrayUtil {
 	public static Integer[] intArray2integer(int[] array) {
 		return ArrayUtils.toObject(array);
 	}
+	
+	/**
+	 * 数组去重<br>
+	 * stringArray为null或size<1,返回自身传入的对象
+	 * 
+	 * @param stringArray
+	 *            源数组
+	 */
+	public static String[] removeLikeElement(String[] array) {
+		return new ArrayUtilHandle<String>().removeLikeArray(array);
+	}
 
+	
+	/**
+	 * 数组去重<br>
+	 * array为null或size<1,返回自身传入的对象<br/>
+	 * 直接调用new ArrayUtilHandle<Integer>().removeLikeArray()
+	 * 
+	 * @param 
+	 *            源数组
+	 */
+	public static Integer[] removeLikeElement(Integer[] array) {
+		return new ArrayUtilHandle<Integer>().removeLikeArray(array);
+	}
+	
+	
+	/**
+	 * 数组去重<br>
+	 * Array为null或size<1,返回自身传入的对象
+	 * 
+	 * @param array
+	 *            源数组
+	 */
+	public static int[] removeLikeElement(int[] array) {
+		return integerArray2Int(new ArrayUtilHandle<Integer>().removeLikeArray(intArray2integer(array)));
+	}
+	
 	/**
 	 * 将一个数组分割若干个指定的大小的的数组<br>
 	 * stringArray为null或size<1,返回空的list
@@ -48,7 +100,7 @@ public class ArrayUtil {
 	 * @return List 不会有null
 	 */
 	public static List<String[]> splitArray(String[] array, int subSize) {
-		return new SplitArrayUtil<String>().splitArray(array, subSize);
+		return new ArrayUtilHandle<String>().splitArray(array, subSize);
 	}
 
 	/**
@@ -62,7 +114,7 @@ public class ArrayUtil {
 	 * @return List 不会有null
 	 */
 	public static List<Integer[]> splitArray(Integer[] arraySrc, int subSize) {
-		return new SplitArrayUtil<Integer>().splitArray(arraySrc, subSize);
+		return new ArrayUtilHandle<Integer>().splitArray(arraySrc, subSize);
 	}
 
 	/**
@@ -90,7 +142,7 @@ public class ArrayUtil {
 	 * @return List 不会有null
 	 */
 	public static List<Float[]> splitArray(Float[] arraySrc, int subSize) {
-		return new SplitArrayUtil<Float>().splitArray(arraySrc, subSize);
+		return new ArrayUtilHandle<Float>().splitArray(arraySrc, subSize);
 	}
 
 	/**
@@ -118,7 +170,7 @@ public class ArrayUtil {
 	 * @return List 不会有null
 	 */
 	public static List<Double[]> splitArray(Double[] arraySrc, int subSize) {
-		return new SplitArrayUtil<Double>().splitArray(arraySrc, subSize);
+		return new ArrayUtilHandle<Double>().splitArray(arraySrc, subSize);
 	}
 
 	/**
@@ -146,7 +198,7 @@ public class ArrayUtil {
 	 * @return List 不会有null
 	 */
 	public static List<Long[]> splitArray(Long[] arraySrc, int subSize) {
-		return new SplitArrayUtil<Long>().splitArray(arraySrc, subSize);
+		return new ArrayUtilHandle<Long>().splitArray(arraySrc, subSize);
 	}
 
 	/**
@@ -174,7 +226,7 @@ public class ArrayUtil {
 	 * @return List 不会有null
 	 */
 	public static List<Number[]> splitArray(Number[] arraySrc, int subSize) {
-		return new SplitArrayUtil<Number>().splitArray(arraySrc, subSize);
+		return new ArrayUtilHandle<Number>().splitArray(arraySrc, subSize);
 	}
 
 	/**
@@ -202,7 +254,7 @@ public class ArrayUtil {
 	 * @return List 不会有null
 	 */
 	public static List<Byte[]> splitArray(Byte[] arraySrc, int subSize) {
-		return new SplitArrayUtil<Byte>().splitArray(arraySrc, subSize);
+		return new ArrayUtilHandle<Byte>().splitArray(arraySrc, subSize);
 	}
 
 	/*****************************
