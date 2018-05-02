@@ -138,4 +138,42 @@ public class ListUtil {
 		// System.out.println("getDiffrent total times "+(System.nanoTime()-st));
 		return diff;
 	}
+	
+	
+	/**
+	 * list1和list2的元素是否一样
+	 * 
+	 * @param list1
+	 * @param list2
+	 * @return
+	 */
+	public static boolean listIsLike(List<String> list1, List<String> list2) {
+		if(list1 == null) {
+			if(list2 == null)
+				return true;
+			else 
+				return false;
+		}
+		
+		if(list2 == null) {
+			if(list1 == null)
+				return true;
+			else 
+				return false;
+		}
+		
+		if(list1.size() != list2.size())
+			return false;
+		
+		Set<String> set = new HashSet<>(list2);//contains用hash计算会比较快，是list的10倍左右
+		String str;
+		for (int i = 0; i < list1.size(); i++) {//这个效率高
+			str = list1.get(i);
+			if (!set.contains(str)) {
+				return false;
+			}
+		}
+		return true;
+		// System.out.println("getDiffrent total times "+(System.nanoTime()-st));
+	}
 }

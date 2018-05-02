@@ -97,6 +97,19 @@ public class NumUtils {
             return true;
         return false;
     }
+    
+    /**
+     * 判断一个Double是不是null并是不是少于某数
+     *
+     * @param d       Double
+     * @param lessNum 比较的数
+     * @return
+     */
+    public static boolean isNullLess(BigDecimal b, BigDecimal lessNum) {
+        if (b == null || b.compareTo(lessNum) == -1)
+            return true;
+        return false;
+    }
 
     /**
      * 判断一个Double是不是null并是不是少于某数

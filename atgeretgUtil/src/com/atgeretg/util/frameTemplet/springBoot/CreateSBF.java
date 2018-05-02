@@ -400,7 +400,7 @@ public class CreateSBF {
 				+ "public interface {3} extends BaseService<{4},{5}> '{'\n\n'}'";
 
 		String entityServiceClass = "package {0};\n" + "\n" + "import {1};\n" + "import {2};\n"
-				+ "import com.djotimes.nobodyService.service.{8};\n"
+				+ "import {8};\n"
 				+ "import org.springframework.stereotype.Service;\n" + "\n" + "@Service(\"{3}\")\n"
 				+ "public class {4} extends BaseServiceImpl<{5},{6}> implements {7} '{'\n\n'}'";
 
@@ -416,7 +416,7 @@ public class CreateSBF {
 
 		String classContent = MessageFormat.format(entityServiceClass, serversImplPackage, entityPackage_entityName,
 				entityPackage_example, StrUtil.strFirstToLow(serviceName, true), serviceImplName, entityName, example,
-				serviceName, serviceName);
+				serviceName, entityServersPackageDot+serviceName);
 		// System.out.println(interfaceContent);
 		// System.out.println(classContent);
 		String interPath = StrUtil.stringBuilder(entityServersPackageDot.replace(".", "/"), serviceName, java);

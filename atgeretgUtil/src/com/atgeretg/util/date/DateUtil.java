@@ -100,65 +100,60 @@ public class DateUtil {
 	 */
 	public static final int HOUR_SCALE = 1000 * 60 * 60;
 
-	// public static SimpleDateFormat dateFormat = new SimpleDateFormat(
-	// "yyyy-MM-dd");
-	// public static SimpleDateFormat dateFormat2 = new
-	// SimpleDateFormat("yyyy-MM");
-	// public static SimpleDateFormat dateFormatDB = new SimpleDateFormat(
-	// "yyyyMMdd");// 数据库使用的日期格式
-	// public static SimpleDateFormat dataTimeFormat = new SimpleDateFormat(
-	// "yyyy-MM-dd HH:mm:ss");
-
-//	public static void main(String[] args) throws Exception {
+	 public static SimpleDateFormat dateFormat = new SimpleDateFormat(
+	 "yyyy-MM-dd");
+	 public static SimpleDateFormat dateFormat2 = new
+	 SimpleDateFormat("yyyy-MM");
+	 public static SimpleDateFormat dateFormatDB = new SimpleDateFormat(
+	 "yyyyMMdd");// 数据库使用的日期格式
+	 public static SimpleDateFormat dataTimeFormat = new SimpleDateFormat(
+	 "yyyy-MM-dd HH:mm:ss");
+	public static void main(String[] args) throws Exception {
 //		Date date = new Date();
-		// Date date2 = addDate(date, 2);
-		// System.out.println("1 date2 =" + date2);
-		// System.out.println(getDateByMinuteAdd(date, 5));
-
-		// System.out.println(getMillis(date));
-
-		// System.out.println(getSecond2(date));
-
-		// System.out.println(getCurrMonthLastDay());
+//		 Date date2 = addDate4Year(date, 2);
+//		 System.out.println("1 date2 =" + date2);
+//		 System.out.println(getDateByMinuteAdd(date, 5));
+//		 System.out.println(getMillis(date));
+//		 System.out.println(getSecond2(date));
+//		 System.out.println(getCurrMonthLastDay());
 //		System.out.println(getCurrentMonthFirstDay());
 //		System.out.println("-------------------");
-//
-//		System.out.println(getCurrentMonthLastDay());
 
+//		System.out.println(getCurrentMonthLastDay());
 //		System.out.println(getMonFirstDay());
-		// long l = diffDateHours(getDateByMinuteAdd(new Date(),-110),new Date());
-		// if(l<2)
-		// System.out.println(l);
-		// int i_day = diffDate(new Date(), diffDate(new Date(), 5));
-		// int i_day_h = (int) diffDateMinute(new Date(), getDateByMinuteAdd(new
-		// Date(),60));
-		// System.out.println(i_day_h);
-		// System.out.println(getWeekMondayOfThis());
-		// System.out.println(format(new Date(), "-"));
-		// List<String> datePositionStr = getDatePositionStr(5);
-		// for (String string : datePositionStr) {
-		// System.out.println(string);
-		// }
-		// getSubTwoTime("2016-04-13","2016-04-15");
-		// SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		// getSubTwoTime
-		// System.out.println(getSubTwoTime1("2017-07-10 17:56:18.138",
-		// "2017-07-10 17:56:17.13"));
-		// Log.systemLog(formatStr2date("2017-07-10"));
-		// Log.systemLog(getWeekOfDateInt(formatSmart("2017-07-10"))+" "+
-		// getWeekOfDateString(formatSmart("2017-07-10")));
-		// List<String> ymList = getBetweenDateMonthList("2017-07", "2017-09",
-		// "YYYY-MM");
-		// for (String string : ymList) {
-		// Log.systemLog(string);
-		// }
-		// List<String> ymdList = getDatePosition(50,"MM-dd");
-		// for (String string : ymdList) {
-		// Log.systemLog(string);
-		// }
-		// Log.systemLog(formatDateStr_ss(calDateSubHour(new Date(),-6)));
-		// Log.systemLog(formatDateStr_ss(newDateFormat(ymdhmss).parse(getTimeStamp())));
-//	}
+//		 long l = diffDateHours(getDateByMinuteAdd(new Date(),-110),new Date());
+//		 if(l<2)
+//		 System.out.println(l);
+//		 int i_day = diffDate(new Date(), diffDate(new Date(), 5));
+//		 int i_day_h = (int) diffDateMinute(new Date(), getDateByMinuteAdd(new
+//		 Date(),60));
+//		 System.out.println(i_day_h);
+//		 System.out.println(getWeekMondayOfThis());
+//		 System.out.println(format(new Date(), "-"));
+//		 List<String> datePositionStr = getDatePositionStr(5);
+//		 for (String string : datePositionStr) {
+//		 System.out.println(string);
+//		 }
+//		 getSubTwoTime("2016-04-13","2016-04-15");
+//		 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//		 getSubTwoTime
+//		 System.out.println(getSubTwoTime1("2017-07-10 17:56:18.138",
+//		 "2017-07-10 17:56:17.13"));
+//		 Log.systemLog(formatStr2date("2017-07-10"));
+//		 Log.systemLog(getWeekOfDateInt(formatSmart("2017-07-10"))+" "+
+//		 getWeekOfDateString(formatSmart("2017-07-10")));
+//		 List<String> ymList = getBetweenDateMonthList("2017-07", "2017-09",
+//		 "YYYY-MM");
+//		 for (String string : ymList) {
+//		 Log.systemLog(string);
+//		 }
+//		 List<String> ymdList = getDatePosition(50,"MM-dd");
+//		 for (String string : ymdList) {
+//		 Log.systemLog(string);
+//		 }
+//		 Log.systemLog(formatDateStr_ss(calDateSubHour(new Date(),-6)));
+//		 Log.systemLog(formatDateStr_ss(newDateFormat(ymdhmss).parse(getTimeStamp())));
+	}
 
 	/** 锁对象 */
 	private static final Object lockObj = new Object();
@@ -1246,7 +1241,49 @@ public class DateUtil {
 		}
 		return days;
 	}
-
+	
+	/**
+	 * 功能：指定日期加上指定月数,month负数表示减<br>
+	 * calendar.add(Calendar.YEAR,-1);//日期减1年<br>
+	 * calendar.add(Calendar.MONTH,3);//日期加3个月<br>
+	 * calendar.add(Calendar.DAY_OF_YEAR,10);//日期加10天<br>
+	 * calendar.add(Calendar.MINUTE, 120);//加上120分
+	 * 
+	 * @param date
+	 *            日期
+	 * @param month
+	 *            月数
+	 * @return 返回相加后的日期
+	 */
+	public static Date addDate4Month(Date date, int month) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, month);
+		// c.setTimeInMillis(getMillis(date) + ((long) day) * 24 * 3600 * 1000);
+		return calendar.getTime();
+	}
+	
+	/**
+	 * 功能：指定日期加上指定年数,year负数表示减<br>
+	 * calendar.add(Calendar.YEAR,-1);//日期减1年<br>
+	 * calendar.add(Calendar.MONTH,3);//日期加3个月<br>
+	 * calendar.add(Calendar.DAY_OF_YEAR,10);//日期加10天<br>
+	 * calendar.add(Calendar.MINUTE, 120);//加上120分
+	 * 
+	 * @param date
+	 *            日期
+	 * @param year
+	 *            年数
+	 * @return 返回相加后的日期
+	 */
+	public static Date addDate4Year(Date date, int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.YEAR, year);
+		// c.setTimeInMillis(getMillis(date) + ((long) day) * 24 * 3600 * 1000);
+		return calendar.getTime();
+	}
+	
 	/**
 	 * 功能：指定日期加上指定天数,day负数表示减<br>
 	 * calendar.add(Calendar.YEAR,-1);//日期减1年<br>
@@ -1260,11 +1297,31 @@ public class DateUtil {
 	 *            天数
 	 * @return 返回相加后的日期
 	 */
-	public static Date addDate(Date date, int day) {
+	public static Date addDate4Day(Date date, int day) {
 		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
 		calendar.add(Calendar.DAY_OF_YEAR, day);
 		// c.setTimeInMillis(getMillis(date) + ((long) day) * 24 * 3600 * 1000);
 		return calendar.getTime();
+		
+	}
+
+	/**
+	 * 功能：指定日期加上指定天数,day负数表示减，用DateUtil.addDate4Day(Date date, int day)代替<br>
+	 * calendar.add(Calendar.YEAR,-1);//日期减1年<br>
+	 * calendar.add(Calendar.MONTH,3);//日期加3个月<br>
+	 * calendar.add(Calendar.DAY_OF_YEAR,10);//日期加10天<br>
+	 * calendar.add(Calendar.MINUTE, 120);//加上120分
+	 * 
+	 * @param date
+	 *            日期
+	 * @param day
+	 *            天数
+	 * @return 返回相加后的日期
+	 */
+	@Deprecated
+	public static Date addDate(Date date, int day) {
+		return addDate4Day(date,day);
 	}
 
 	/**
@@ -1306,7 +1363,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static Date diffDate(Date date, int day) {
-		return addDate(date, -day);
+		return addDate4Day(date, -day);
 	}
 
 	/**
