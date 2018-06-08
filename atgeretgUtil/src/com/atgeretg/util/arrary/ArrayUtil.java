@@ -16,15 +16,29 @@ import org.apache.commons.lang3.ArrayUtils;
 public class ArrayUtil {
 	
 	public static void main(String[] args) {
-		String s[] = new String[999999]; 
-		for(int i = 0; i < s.length; i++) {
-			s[i]= "i = " + i%8;
+		byte[] b = new byte[9];
+		for(int i = 0; i < b.length;i++) {
+			b[i] = (byte)i;
 		}
-		long start = System.currentTimeMillis();
-		String[] array = new ArrayUtilHandle<String>().removeLikeArray(s);
-		System.out.println(System.currentTimeMillis() - start);
-		System.out.println(array.length);
-		System.out.println(Arrays.toString(array));
+//		Byte[] bb = new Byte[9];
+		byte[] bb = new byte[9];
+		for(int i= 0; i < bb.length;i++) {
+			System.out.println(bb[i]);
+		}
+		System.out.println("------------------------");
+		System.arraycopy(b, 0, bb,0, 9);
+		for(int i= 0; i < bb.length;i++) {
+			System.out.println(bb[i]);
+		}
+//		String s[] = new String[999999]; 
+//		for(int i = 0; i < s.length; i++) {
+//			s[i]= "i = " + i%8;
+//		}
+//		long start = System.currentTimeMillis();
+//		String[] array = new ArrayUtilHandle<String>().removeLikeArray(s);
+//		System.out.println(System.currentTimeMillis() - start);
+//		System.out.println(array.length);
+//		System.out.println(Arrays.toString(array));
 	}
 	
 //	public static 
