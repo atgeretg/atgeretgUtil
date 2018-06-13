@@ -7,21 +7,28 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.atgeretg.util.string.StrUtil;
 
 public class Net4Url {
 
-	// public static void main(String[] args) {
-	// Map<String, String> param = new HashMap<>();
-	// param.put("num", "5");
-	// param.put("page", "1");
-	// param.put("pageTes", "在的&&fd好");
-	// param.put("pageT好es", "在的&&fd*￥￥$$");
-	// System.out.println(netPost("http://127.0.0.1:8080/circle/user/getUserInfo",
-	// param));
-	// }
-	
+//	public static void main(String[] args) {
+//		// Map<String, String> param = new HashMap<>();
+//		// param.put("num", "5");
+//		// param.put("page", "1");
+//		// param.put("pageTes", "在的&&fd好");
+//		// param.put("pageT好es", "在的&&fd*￥￥$$");
+//		String path = "http://api.dev.daydao.com/token?grant_type=client_credentials&client_id=8e108e49-6eb6-11e8-8302-de7575a8ec4b&client_secret=bc2b25f5-6eb6-11e8-8302-de7575a8ec4b";
+//		String path2 = "http://api.dev.daydao.com/si/person/openid/y5e0ok92004c30ba796df63474159f24";
+//		Map<String, String> headers = new HashMap<String, String>();
+//		headers.put("Authorization", "Bearer " + "79a3d59f39070918d876839557255de5");
+//
+//		// System.out.println(netGet(path, null));
+//
+//		System.out.println(netGet(path2, null, headers));
+//	}
+
 	/**
 	 * URL POST请求
 	 * 
@@ -32,7 +39,7 @@ public class Net4Url {
 	 * @return null | 网络数据
 	 */
 	public static String netPost(String urlPath, Map<String, String> param) {
-		return getNetData(urlPath, param, "POST");
+		return getNetData(urlPath, param, null, "POST");
 	}
 
 	/**
@@ -45,7 +52,37 @@ public class Net4Url {
 	 * @return null | 网络数据
 	 */
 	public static String netGet(String urlPath, Map<String, String> param) {
-		return getNetData(urlPath, param, "GET");
+		return getNetData(urlPath, param, null, "GET");
+	}
+
+	/**
+	 * URL POST请求
+	 * 
+	 * @param urlPath
+	 *            地址
+	 * @param param
+	 *            参数
+	 * @param header
+	 *            请求头
+	 * @return null | 网络数据
+	 */
+	public static String netPost(String urlPath, Map<String, String> param, Map<String, String> header) {
+		return getNetData(urlPath, param, header, "POST");
+	}
+
+	/**
+	 * URL GET请求
+	 * 
+	 * @param urlPath
+	 *            地址
+	 * @param param
+	 *            参数
+	 * @param header
+	 *            请求头
+	 * @return null | 网络数据
+	 */
+	public static String netGet(String urlPath, Map<String, String> param, Map<String, String> header) {
+		return getNetData(urlPath, param, header, "GET");
 	}
 
 	/**
@@ -55,11 +92,14 @@ public class Net4Url {
 	 *            地址
 	 * @param param
 	 *            参数
+	 * @param header
+	 *            请求头
 	 * @param method
 	 *            请求方式（POST或GET）
 	 * @return
 	 */
-	private static String getNetData(String urlPath, Map<String, String> param, String method) {
+	private static String getNetData(String urlPath, Map<String, String> param, Map<String, String> header,
+			String method) {
 		if (StrUtil.isEmpty(method))
 			return null;
 		if (StrUtil.isEmpty(urlPath))
@@ -83,11 +123,17 @@ public class Net4Url {
 			if ("GET".equals(method) && !StrUtil.isEmpty(stringParam)) {// get请求直接拼接
 				urlPath = StrUtil.stringBuilder(urlPath, "?", builder.toString());
 			}
-			System.out.println(urlPath + " method = " + method);
+			// System.out.println(urlPath + " method = " + method);
 			URL url = new URL(urlPath);
 			url_con = (HttpURLConnection) url.openConnection();
 			url_con.setConnectTimeout(5000);
 			url_con.setReadTimeout(15000);
+			if (header != null) {
+				for (Entry<String, String> entry : header.entrySet()) {
+					url_con.setRequestProperty(entry.getKey(), entry.getValue());
+					// System.out.println(entry.getKey()+" "+ entry.getValue());
+				}
+			}
 			if ("POST".equals(method)) {// post请求
 				url_con.setRequestMethod(method);
 				url_con.setDoOutput(true);
