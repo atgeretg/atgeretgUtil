@@ -45,7 +45,7 @@ public class IOConvertUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public String parse_String(InputStream in) throws Exception {
+	public static String parse_String(InputStream in) throws Exception {
 		ByteArrayOutputStream swapStream = parse(in);
 		return swapStream.toString();
 	}
@@ -57,7 +57,7 @@ public class IOConvertUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public String parse_String(OutputStream out) throws Exception {
+	public static String parse_String(OutputStream out) throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		baos = (ByteArrayOutputStream) out;
 		ByteArrayInputStream swapStream = new ByteArrayInputStream(baos.toByteArray());
@@ -71,7 +71,7 @@ public class IOConvertUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public ByteArrayInputStream parse_inputStream(String in) throws Exception {
+	public static ByteArrayInputStream parse_inputStream(String in) throws Exception {
 		ByteArrayInputStream input = new ByteArrayInputStream(in.getBytes());
 		return input;
 	}
@@ -83,7 +83,7 @@ public class IOConvertUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public ByteArrayOutputStream parse_outputStream(String string) throws Exception {
+	public static ByteArrayOutputStream parse_outputStream(String string) throws Exception {
 		return parse(parse_inputStream(string));
 	}
 }
