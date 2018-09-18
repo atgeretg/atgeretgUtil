@@ -147,6 +147,8 @@ public class SerialPortManager {
 			}
 		}
 	}
+	
+	
 
 	/** 
 	 * 从串口读取数据 
@@ -177,6 +179,42 @@ public class SerialPortManager {
 	            }  
 	        } catch (IOException e) {  
 	            new SerialPortInputStreamCloseFailure().printStackTrace();  
+	        }  
+	    }  
+	    return bytes;  
+	} 
+	
+	/** 
+	 * 从串口读取数据 
+	 *  
+	 * @param serialPort 
+	 *            当前已建立连接的SerialPort对象 
+	 * @return 读取到的数据 
+	 * @throws ReadDataFromSerialPortFailure 读取失败
+	 * @throws SerialPortInputStreamCloseFailure 关闭流时失败
+	 */  
+	public static byte[] readFromPortThrow(SerialPort serialPort) throws ReadDataFromSerialPortFailure, SerialPortInputStreamCloseFailure {  
+	    InputStream in = null;  
+	    byte[] bytes = {};  
+	    try {  
+	        in = serialPort.getInputStream();  
+	        // 缓冲区大小为一个字节  
+	        byte[] readBuffer = new byte[1];  
+	        int bytesNum = in.read(readBuffer);  
+	        while (bytesNum > 0) {  
+	            bytes = ByteUtil.concat(bytes, readBuffer);  
+	            bytesNum = in.read(readBuffer);  
+	        }  
+	    } catch (IOException e) {  
+	        throw new ReadDataFromSerialPortFailure();  
+	    } finally { 
+	        try {  
+	            if (in != null) {  
+	                in.close();  
+	                in = null;  
+	            }  
+	        } catch (IOException e) {  
+	        	throw new SerialPortInputStreamCloseFailure();  
 	        }  
 	    }  
 	    return bytes;  

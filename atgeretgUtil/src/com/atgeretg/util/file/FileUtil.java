@@ -33,6 +33,8 @@ public class FileUtil {
 	public static final String GB18030 = "GB18030";
 	public static final String UTF8 = "UTF-8";
 	public static final String UTF16 = "UTF-16";
+	public static final String DOT = ".";
+	public static final String SLASH = "/";
 
 	/**
 	 * 创建文件夹，存在则将存在文件夹重命名，存在时又不是文件夹，则将文件重命名
@@ -82,24 +84,27 @@ public class FileUtil {
 
 	/**
 	 * 通过文件路径进行获取文件名<br>
+	 * 
 	 * @param filePath
-	 * @return 
+	 * @return
 	 */
 	public static String getDir2FileName(String filePath) {
 		return getDir2file(filePath)[1];
 	}
-	
+
 	/**
 	 * 通过文件路径进行获取文件夹名<br>
+	 * 
 	 * @param filePath
-	 * @return 
+	 * @return
 	 */
 	public static String getDir2FileDir(String filePath) {
 		return getDir2file(filePath)[0];
 	}
-	
+
 	/**
-	 * 通过文件路径进行分离文件夹和文件,数组第一个是文件夹路径，数组第二个是文件名，如果直接是文件名（没有“\\”或“/”）<br>
+	 * 通过文件路径进行分离文件夹和文件,数组第一个是文件夹路径，数组第二个是文件名；<br>
+	 * 如果直接是文件名（没有“\\”或“/”），文件路径（第一个）为null,第二个为文件名<br>
 	 * 如：/home/atgertg/document/file/atgeretg.txt，<br>
 	 * 返回的是arr[0] = "/home/atgertg/document/file" 和 arr[1] = "atgeretg.txt"
 	 * 
@@ -109,7 +114,7 @@ public class FileUtil {
 	public static String[] getDir2file(String filePath) {
 		if (filePath.contains("\\"))
 			filePath = filePath.replaceAll("\\\\", "/");// 方法参数是正则表达式
-//		System.out.println(filePath);
+		// System.out.println(filePath);
 		int index = filePath.lastIndexOf("/");// filePath.lastIndexOf(File.separator);
 		String[] arr = new String[2];
 		if (index < 0) {
@@ -119,6 +124,18 @@ public class FileUtil {
 		arr[0] = filePath.substring(0, index);
 		arr[1] = filePath.substring(index + 1);
 		return arr;
+	}
+
+	/**
+	 * 获取文件类型（获取文件后缀名）
+	 * @param fileName
+	 * @return
+	 */
+	public static String getFileSuffix(String fileName) {
+		if (!fileName.contains(FileUtil.DOT))
+			return null;
+		String nameSuffix = fileName.substring(fileName.lastIndexOf(FileUtil.DOT)+1);
+		return nameSuffix;
 	}
 
 	/**
@@ -328,7 +345,6 @@ public class FileUtil {
 			}
 		}
 	}
-	
 
 	/**
 	 * 文件名相同时，重新命名，“方式：xxx---变---xxx(i)”，i是int型自增数，并返回一个File对象，也可用于生成创建一个文件
@@ -453,7 +469,7 @@ public class FileUtil {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			// 把每次读取的内容写入到内存中，然后从内存中获取
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			byte[] buffer = new byte[1024*1024];
+			byte[] buffer = new byte[1024 * 1024];
 			int len = 0;
 			// 只要没读完，不断的读取
 			while ((len = fileInputStream.read(buffer)) != -1) {
@@ -483,7 +499,7 @@ public class FileUtil {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			// 把每次读取的内容写入到内存中，然后从内存中获取
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			byte[] buffer = new byte[1024*1024];
+			byte[] buffer = new byte[1024 * 1024];
 			int len = 0;
 			// 只要没读完，不断的读取
 			while ((len = fileInputStream.read(buffer)) != -1) {
@@ -532,7 +548,6 @@ public class FileUtil {
 		}
 		return null;
 	}
-
 
 	/**
 	 * 一行一行读取文件，一行的内容就是一个数组中的元素，默认以UFT8的格式读取

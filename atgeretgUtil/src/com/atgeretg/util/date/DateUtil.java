@@ -13,6 +13,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.SimpleTimeZone;
 
+import javax.net.ssl.HostnameVerifier;
+
+import com.atgeretg.util.number.NumTool;
 import com.atgeretg.util.string.StrUtil;
 
 
@@ -110,7 +113,12 @@ public class DateUtil {
 	public static SimpleDateFormat dataTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static void main(String[] args) throws Exception {
-//		Date d = addDate4Year(new Date(), 1);// formatSmart("2007-09-08");
+		System.out.println(calcDateAtRange(new Date(), 15, 5, 20, 30));
+//		Date d = addDate4Year(new Date(), 1);// 
+//		Date formatSmart = formatSmart("2007/09/8");
+//		Date date = formatStringToDate("2007/9/08", Y_M_D);
+//		System.out.println("date = " + date);
+//		System.out.println(formatSmart);
 //		System.out.println(formatDateStr(d));
 //		System.out.println("1000 * 60 * 60 * 24 * 365 = " + 1000L * 60 * 60 * 24 * 365);// 1471228928
 //		System.out.println("1000 * 60 * 60 * 24 * 365 = " + 1000 * 60 * 60 * 24);// 86400000
@@ -123,6 +131,7 @@ public class DateUtil {
 		// System.out.println(" (86400000 * 365) = " + (86400000 * 365));
 //		System.out.println(calDateSubYear(new Date(), d));
 //		System.out.println(calcDateAtRange(new Date(), d, addDate4Year(new Date(), -1)));
+		
 
 		// long l = 123456l;
 		// System.out.println("l / 1471228928 = " + (l/1471228928));
@@ -437,7 +446,7 @@ public class DateUtil {
 		}
 		return date;
 	}
-
+	
 	/**
 	 * 智能转换日期,传入一个日期字符串，智能将其转换成日期对象
 	 * 
@@ -445,14 +454,43 @@ public class DateUtil {
 	 * @return null | Date对象
 	 */
 	public static Date formatSmart(String text) {
+		try {
+			return formatSmartThrows(text);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 智能转换日期,传入一个日期字符串，智能将其转换成日期对象
+	 * 
+	 * @param text
+	 * @return null | Date对象
+	 */
+	public static Date formatSmartThrows(String text) throws Exception {
 		Date date = null;
 		try {
 			if (StrUtil.isEmpty(text)) {
 				date = null;
 			}
+			String xieGang = "/",hengGang = "-";
+			text = text.trim();
 			switch (text.length()) {
 			case 8:
-				date = formatStringToDate(text, YMD);
+				if(text.contains(xieGang)) 
+					date = formatStringToDate(text, ymd);
+				else if(text.contains(hengGang)) 
+					date = formatStringToDate(text, Y_M_D);
+				else
+					date = formatStringToDate(text, YMD);
+				break;
+			case 9:
+				if(text.contains(xieGang)) 
+					date = formatStringToDate(text, ymd);
+				else if(text.contains(hengGang)) 
+					date = formatStringToDate(text, Y_M_D);
+				
 				break;
 			case 10:
 				if (text.contains("/"))
@@ -861,7 +899,143 @@ public class DateUtil {
 	 * 
 	 * 
 	 *********************************************************************************/
+	/**
+	 * 判断时间是否在时间段内
+	 * 
+	 * @param nowTime
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public static boolean calcDateAtRange(String nowTime, String beginTime, String endTime) {
+		Date now = formatSmart(nowTime);
+		Date begin = formatSmart(beginTime);
+		Date end = formatSmart(endTime);
+		return calcDateAtRange(now, begin, end);
+	}
 
+	/**
+	 * 判断时间是否在时间段内
+	 * 
+	 * @param nowTime
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public static boolean calcDateAtRange(Date nowTime, String beginTime, String endTime) {
+		Date begin = formatSmart(beginTime);
+		Date end = formatSmart(endTime);
+		return calcDateAtRange(nowTime, begin, end);
+	}
+
+	/**
+	 * 判断时间是否在时间段内
+	 * 
+	 * @param nowTime
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public static boolean calcDateAtRange(Date nowTime, Date beginTime, Date endTime) {
+		Calendar date = Calendar.getInstance();
+		date.setTime(nowTime);
+		Calendar begin = Calendar.getInstance();
+		begin.setTime(beginTime);
+		Calendar end = Calendar.getInstance();
+		end.setTime(endTime);
+		if (date.after(begin) && date.before(end)) {
+			return true;
+		} else if (nowTime.compareTo(beginTime) == 0 || nowTime.compareTo(endTime) == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * 与给出（转入）的时间为日期为准，判断是否在指定时间（小时、分钟）段内<br>
+	 * 如：“nowTime = 2018-9-16 19:56:09” “startHour = 8” “startMin = 30” “startSceond= 0”<br>
+	 *  “endHour = 20” “endMin = 10” “endSceond= 0”；返回true
+	 * @param nowTime
+	 * @param startHour
+	 * @param startMin
+	 * @param endHour
+	 * @param endMin
+	 * @return
+	 */
+	public static boolean calcDateAtRange(Date nowTime, int startHour, int startMin,
+			int endHour, int endMin) {
+		
+		return calcDateAtRange(nowTime,startHour,startMin,0,endHour,endMin,0);
+	}
+	
+	/**
+	 * 与给出（转入）的时间为日期为准，判断是否在指定时间（小时、分钟）段内<br>
+	 * 如：“nowTime = 2018-9-16 19:56:09” “startHour = 8” “startMin = 30” “startSceond= 0”<br>
+	 *  “endHour = 20” “endMin = 10” “endSceond= 0”；返回true
+	 * @param nowTime
+	 * @param startHour
+	 * @param startMin
+	 * @param endHour
+	 * @param endMin
+	 * @return
+	 */
+	public static boolean calcDateAtRange(String nowTime, int startHour, int startMin,
+			int endHour, int endMin) {
+		Date now = formatSmart(nowTime);
+		return calcDateAtRange(now,startHour,startMin,0,endHour,endMin,0);
+	}
+	
+	/**
+	 * 与给出（转入）的时间为日期为准，判断是否在指定时间（小时、分钟）段内<br>
+	 * 如：“nowTime = 2018-9-16 19:56:09” “startHour = 8” “startMin = 30” “startSceond= 0”<br>
+	 *  “endHour = 20” “endMin = 10” “endSceond= 0”；返回true
+	 * @param nowTime
+	 * @param startHour
+	 * @param startMin
+	 * @param startSecond
+	 * @param endHour
+	 * @param endMin
+	 * @param endSecond
+	 * @return
+	 */
+	public static boolean calcDateAtRange(String nowTime, int startHour, int startMin,
+			int startSecond,int endHour, int endMin,int endSecond) {
+		Date now = formatSmart(nowTime);
+		return calcDateAtRange(now,startHour,startMin,startMin,endHour,endMin,endSecond);
+	}
+	
+	/**
+	 * 与给出（转入）的时间为日期为准，判断是否在指定时间（小时、分钟）段内<br>
+	 * 如：“nowTime = 2018-9-16 19:56:09” “startHour = 8” “startMin = 30” “startSceond= 0”<br>
+	 *  “endHour = 20” “endMin = 10” “endSceond= 0”；返回true
+	 * @param nowTime
+	 * @param startHour
+	 * @param startMin
+	 * @param startSecond
+	 * @param endHour
+	 * @param endMin
+	 * @param endSecond
+	 * @return
+	 */
+	public static boolean calcDateAtRange(Date now, int startHour, int startMin,
+			int startSecond,int endHour, int endMin,int endSecond) {
+		
+		int hour = getHour(now);
+		int minute = getMinute(now);
+		int second = getSecond2(now);
+		long longNowTime = hour* 3600 + minute*60+second;
+		startHour = NumTool.isAtIntervalBothCloseRe(startHour, 0, 23,23);
+		endHour =  NumTool.isAtIntervalBothCloseRe(endHour, 0, 23,23);
+		startMin =  NumTool.isAtIntervalBothCloseRe(startMin, 0, 59,59);
+		endMin =  NumTool.isAtIntervalBothCloseRe(endMin, 0, 59,59);
+		startSecond=  NumTool.isAtIntervalBothCloseRe(startSecond, 0, 59,59);
+		endSecond=  NumTool.isAtIntervalBothCloseRe(endSecond, 0, 59,59);
+		long startTime = startHour * 3600 + startMin * 60 + startSecond;
+		long endTime = endHour * 3600 + endMin * 60 + endSecond;
+		return NumTool.isAtIntervalBothClose(longNowTime, startTime, endTime);
+	}
+	
 	/**
 	 * 是否是闰年
 	 */
@@ -1923,58 +2097,7 @@ public class DateUtil {
 		return 0;
 	}
 
-	/**
-	 * 判断时间是否在时间段内
-	 * 
-	 * @param nowTime
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	public static boolean calcDateAtRange(String nowTime, String beginTime, String endTime) {
-		Date now = formatSmart(nowTime);
-		Date begin = formatSmart(beginTime);
-		Date end = formatSmart(endTime);
-		return calcDateAtRange(now, begin, end);
-	}
-
-	/**
-	 * 判断时间是否在时间段内
-	 * 
-	 * @param nowTime
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	public static boolean calcDateAtRange(Date nowTime, String beginTime, String endTime) {
-		Date begin = formatSmart(beginTime);
-		Date end = formatSmart(endTime);
-		return calcDateAtRange(nowTime, begin, end);
-	}
-
-	/**
-	 * 判断时间是否在时间段内
-	 * 
-	 * @param nowTime
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	public static boolean calcDateAtRange(Date nowTime, Date beginTime, Date endTime) {
-		Calendar date = Calendar.getInstance();
-		date.setTime(nowTime);
-		Calendar begin = Calendar.getInstance();
-		begin.setTime(beginTime);
-		Calendar end = Calendar.getInstance();
-		end.setTime(endTime);
-		if (date.after(begin) && date.before(end)) {
-			return true;
-		} else if (nowTime.compareTo(beginTime) == 0 || nowTime.compareTo(endTime) == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	
 
 	/********************************************************************************
 	 * 

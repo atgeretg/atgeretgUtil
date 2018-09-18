@@ -17,6 +17,15 @@ public class StrUtil {
 	public static final String GB18030 = "GB18030";
 	public static final String UTF8 = "UTF-8";
 	public static final String UTF16 = "UTF-16";
+	public static final String DOT = ".";
+	public static final String SLASH = "/";
+
+	public static void main(String[] args) {
+		String lastStrIsDot = lastStrIsDot("fdf.dfdafj.", true);
+		System.out.println(lastStrIsDot);
+		lastStrIsDot = lastStrIsSomeString("fdasfaf.df", ".df", false);
+		System.out.println(lastStrIsDot);
+	}
 
 	/**
 	 * 字符串是否为空
@@ -46,10 +55,102 @@ public class StrUtil {
 		return false;
 	}
 
-//	 public static void main(String[] args) {
-//		 String[] split = "1459394,1459395,1459403,1692515,1692531,1692537,1692542,1692546,1705181,1705183,1705186,1705187,1705191,1883327".split(",");
-//	 System.out.println(strFirstToLow("dd",true));
-//	 }
+	/**
+	 * string值是不是空，空返回希望值
+	 * 
+	 * @param string
+	 *            string值
+	 * @param hopeValue
+	 *            希望值
+	 * @return
+	 */
+	public static String stringNullHope(String string, String hopeValue) {
+		if (StrUtil.isEmpty(string))
+			return hopeValue;
+		return string;
+	}
+
+	// public static void main(String[] args) {
+	// String[] split =
+	// "1459394,1459395,1459403,1692515,1692531,1692537,1692542,1692546,1705181,1705183,1705186,1705187,1705191,1883327".split(",");
+	// System.out.println(strFirstToLow("dd",true));
+	// }
+
+	/**
+	 * 最后一个字符串要不要点
+	 *
+	 * @param string
+	 * @param need
+	 *            要不要点 return 传入的字符串，加上点或去除点
+	 */
+	private static String lastStrIsDot(String string, boolean need) {
+		return lastStrIsSomeString(string, StrUtil.DOT, need);
+
+	}
+
+	/**
+	 * 最后一个字符串要不要斜杠
+	 *
+	 * @param string
+	 * @param need
+	 *            要不要点 return 传入的字符串，加上斜杠或去除斜杠
+	 */
+	public static String lastStrIsSlash(String string, boolean need) {
+		return lastStrIsSomeString(string, StrUtil.SLASH, need);
+	}
+
+	/**
+	 * 最后字符串是否需要某字符串
+	 *
+	 * @param string
+	 * @param needStr
+	 *            指定的字符串
+	 * @param need
+	 *            要不要
+	 * @return null | 传入的字符串，加上字符串或去除字符串
+	 */
+	public static String lastStrIsSomeString(String string, String needStr, boolean need) {
+		if (isEmpty(string) || isEmpty(needStr))
+			return string;
+		boolean have = (needStr.equals(string.substring(string.length() - needStr.length())));
+		if (need) {// 需要指定的字符串
+			if (have)// 有指定的字符串
+				return string;
+			return string + needStr;
+		} else {
+			if (have)// 指定的字符串
+				return string.substring(0, string.length() - needStr.length());
+			return string;
+		}
+
+	}
+
+	/**
+	 * 前面字符串是否需要某字符串
+	 *
+	 * @param string
+	 * @param needStr
+	 *            指定的字符串
+	 * @param need
+	 *            要不要
+	 * @return null | 传入的字符串，加上字符串或去除字符串
+	 */
+	public static String firstStrIsSomeString(String string, String needStr, boolean need) {
+		// TODO
+		if (StrUtil.isEmpty(string) || StrUtil.isEmpty(needStr))
+			return string;
+		boolean have = (needStr.equals(string.substring(0, needStr.length())));
+		if (need) {// 需要点
+			if (have)// 有点
+				return string;
+			return needStr + string;
+		} else {
+			if (have)// 有点
+				return string.substring(needStr.length(), string.length());
+			return string;
+		}
+
+	}
 
 	/**
 	 * 字符串数组转成字符串
@@ -229,28 +330,29 @@ public class StrUtil {
 		}
 		return builder.toString();
 	}
-	
+
 	/**
 	 * 数组中是否包含某字符，包含返回true
+	 * 
 	 * @param arr
 	 * @param targetValue
 	 * @return true | false
 	 */
 	public static boolean strArrContains(String[] arr, String targetValue) {
-	    for(String s : arr){
-	        if(s.equals(targetValue))
-	            return true;
-	    }
-	    return false;
+		for (String s : arr) {
+			if (s.equals(targetValue))
+				return true;
+		}
+		return false;
 	}
-	
+
 	/**
 	 * 最后一个字符串要不要点
 	 *
-	 * @param string 传入字符串
+	 * @param string
+	 *            传入字符串
 	 * @param need
-	 *            需不需要点
-	 * return 传入的字符串，加上点或去除点
+	 *            需不需要点 return 传入的字符串，加上点或去除点
 	 */
 	public static String strLastHaveDot(String string, boolean need) {
 		boolean have = (".".equals(string.substring(string.length() - 1)));
@@ -265,24 +367,24 @@ public class StrUtil {
 		}
 
 	}
-	
+
 	/**
 	 * 字符串第一个字符是不是要转成小写
 	 *
-	 * @param string 传入字符串
+	 * @param string
+	 *            传入字符串
 	 * @param is
-	 *           是不是要转成小写（false转成大写）
-	 *            return 传入的字符串的转换结果
+	 *            是不是要转成小写（false转成大写） return 传入的字符串的转换结果
 	 */
 	public static String strFirstToLow(String string, boolean is) {
 		String nameFirst = "";
-		if(is)
+		if (is)
 			nameFirst = string.substring(0, 1).toLowerCase();
 		else
 			nameFirst = string.substring(0, 1).toUpperCase();
 		String nameLast = string.substring(1);
-		return nameFirst+nameLast;
-	}	
+		return nameFirst + nameLast;
+	}
 
 	/**
 	 * 如果字符串没有超过最长显示长度返回原字符串，否则从开头截取指定长度并加...返回。
