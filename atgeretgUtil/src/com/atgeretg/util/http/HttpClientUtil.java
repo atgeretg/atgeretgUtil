@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,12 +26,15 @@ import org.apache.http.conn.util.PublicSuffixMatcher;
 import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
@@ -45,18 +50,22 @@ public class HttpClientUtil {
 	private HttpClientUtil() {
 	}
 
-//	public static void main(String[] args) {
-//		String pathGet = "http://47.52.227.171:8080/myDownload/DownloadServlet?download=";// %25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar";
-//		// String name = pathGet.split("download=")[1];
-//		// String decoderString =
-//		// UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
-//		// String decoderString2 = UrlUtil.getURLDecoderString(name);
-//		HttpClientUtil.getInstance().httpDownload(pathGet + UrlUtil.getURLEncoderString("商品上架1-15.jar", 2),
-//				"E:\\tool.jar");
-//
-//		// System.out.println(decoderString + "\ndecoderString2 = " +decoderString2);
-//		// pathGet+"商品上架1-15.jar";
-//	}
+	// public static void main(String[] args) {
+	// String pathGet =
+	// "http://47.52.227.171:8080/myDownload/DownloadServlet?download=";//
+	// %25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar";
+	// // String name = pathGet.split("download=")[1];
+	// // String decoderString =
+	// //
+	// UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
+	// // String decoderString2 = UrlUtil.getURLDecoderString(name);
+	// HttpClientUtil.getInstance().httpDownload(pathGet +
+	// UrlUtil.getURLEncoderString("商品上架1-15.jar", 2),
+	// "E:\\tool.jar");
+	//
+	// // System.out.println(decoderString + "\ndecoderString2 = " +decoderString2);
+	// // pathGet+"商品上架1-15.jar";
+	// }
 
 	public static HttpClientUtil getInstance() {
 		if (instance == null) {
@@ -131,15 +140,52 @@ public class HttpClientUtil {
 	 * @param fileLists
 	 *            附件
 	 */
+	public String sendHttpPost(String httpUrl, Map<String, String> maps, File file) {
+		HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
+		// httpPost.addHeader("Content-type","charset=utf-8");
+		MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+		meBuilder.setCharset(Charset.forName("utf-8"));
+		meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+		for (String key : maps.keySet()) {
+			meBuilder.addPart(key, new StringBody(maps.get(key), contentType));
+		}
+		if (file != null) {
+			FileBody fileBody = new FileBody(file);
+			meBuilder.addPart("file", fileBody);
+		}
+
+		HttpEntity reqEntity = meBuilder.build();
+		httpPost.setEntity(reqEntity);
+		return sendHttpPost(httpPost);
+	}
+
+	/**
+	 * 发送 post请求（带文件）
+	 * 
+	 * @param httpUrl
+	 *            地址
+	 * @param maps
+	 *            参数
+	 * @param fileLists
+	 *            附件
+	 */
 	public String sendHttpPost(String httpUrl, Map<String, String> maps, List<File> fileLists) {
 		HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
 		MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+		meBuilder.setCharset(Charset.forName("utf-8"));
+		meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+		
 		for (String key : maps.keySet()) {
-			meBuilder.addPart(key, new StringBody(maps.get(key), ContentType.TEXT_PLAIN));
+//			meBuilder.addPart(key, new StringBody(maps.get(key), ContentType.TEXT_PLAIN));//ISO-8859-1
+			meBuilder.addPart(key, new StringBody(maps.get(key), contentType));
 		}
-		for (File file : fileLists) {
-			FileBody fileBody = new FileBody(file);
-			meBuilder.addPart("files", fileBody);
+		if (fileLists != null) {
+			for (File file : fileLists) {
+				FileBody fileBody = new FileBody(file);
+				meBuilder.addPart("files", fileBody);
+			}
 		}
 		HttpEntity reqEntity = meBuilder.build();
 		httpPost.setEntity(reqEntity);
@@ -163,8 +209,14 @@ public class HttpClientUtil {
 			httpPost.setConfig(requestConfig);
 			// 执行请求
 			response = httpClient.execute(httpPost);
-			entity = response.getEntity();
-			responseContent = EntityUtils.toString(entity, "UTF-8");
+			// entity = response.getEntity();
+
+			if (response.getStatusLine().getStatusCode() == 200) {
+				entity = response.getEntity();
+				responseContent = EntityUtils.toString(entity, "UTF-8");
+				return responseContent;
+			}
+
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -220,8 +272,10 @@ public class HttpClientUtil {
 			httpGet.setConfig(requestConfig);
 			// 执行请求
 			response = httpClient.execute(httpGet);
-			entity = response.getEntity();
-			responseContent = EntityUtils.toString(entity, "UTF-8");
+			if (response.getStatusLine().getStatusCode() == 200) {
+				entity = response.getEntity();
+				responseContent = EntityUtils.toString(entity, "UTF-8");
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -260,8 +314,10 @@ public class HttpClientUtil {
 			httpGet.setConfig(requestConfig);
 			// 执行请求
 			response = httpClient.execute(httpGet);
-			entity = response.getEntity();
-			responseContent = EntityUtils.toString(entity, "UTF-8");
+			if (response.getStatusLine().getStatusCode() == 200) {
+				entity = response.getEntity();
+				responseContent = EntityUtils.toString(entity, "UTF-8");
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -290,7 +346,7 @@ public class HttpClientUtil {
 	 * @return null | 保存的文件路径
 	 */
 	public String httpDownload(String url, String savePath) {
-		
+
 		String fileSavePath = null;
 		HttpGet httpGet2 = new HttpGet(url);
 		httpGet2.setConfig(requestConfig);
@@ -338,5 +394,6 @@ public class HttpClientUtil {
 		}
 		return null;
 	}
+
 
 }

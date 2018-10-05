@@ -9,7 +9,7 @@
 	<classpathentry kind="lib" path="lib/media/audio.jar"/>
 	<classpathentry kind="lib" path="lib/media/jacob_17_2M.jar"/>
 	<classpathentry kind="lib" path="lib/net/httpclient-4.5.3.jar"/>
-	<classpathentry kind="lib" path="lib/net/httpcore-4.4.6.jar"/>
+	<classpathentry kind="lib" path="lib/net/httpcore-4.4.6.jar" sourcepath="C:/Users/atgeretg_com/.m2/repository/org/apache/httpcomponents/httpcore/4.4.6/httpcore-4.4.6-sources.jar"/>
 	<classpathentry kind="lib" path="lib/net/httpmime-4.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/officeRead/commons-collections4-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/officeRead/poi-3.17.jar"/>

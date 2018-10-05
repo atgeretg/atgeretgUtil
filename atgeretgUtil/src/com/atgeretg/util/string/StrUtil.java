@@ -20,12 +20,21 @@ public class StrUtil {
 	public static final String DOT = ".";
 	public static final String SLASH = "/";
 
-	public static void main(String[] args) {
-		String lastStrIsDot = lastStrIsDot("fdf.dfdafj.", true);
-		System.out.println(lastStrIsDot);
-		lastStrIsDot = lastStrIsSomeString("fdasfaf.df", ".df", false);
-		System.out.println(lastStrIsDot);
-	}
+//	public static void main(String[] args) {
+//		String lastStrIsDot = lastStrIsDot("fdf.dfdafj.", true);
+//		System.out.println(lastStrIsDot);
+//		lastStrIsDot = lastStrIsSomeString("fdasfaf.df", ".df", false);
+//
+//		
+//		System.out.println(lastStrIsDot);
+//		
+//		
+//		
+//		System.out.println("5555555555555555555555");
+//		System.out.println("\"atgeretg.super\" = " + substringAfter("atgeretg.super", "."));
+//		System.out.println("\"atgeretg.super\" = " + substringBeforeLast("atgeretg.super", "."));
+//		System.out.println("\"atgeretg.sup.er\" = " + substringBefore("atgeretg.sup.er", "."));
+//	}
 
 	/**
 	 * 字符串是否为空
@@ -1373,7 +1382,7 @@ public class StrUtil {
 	}
 
 	/**
-	 * 功能：截取出最后一个标志位之后的字符串.<br/>
+	 * 功能：截取出最后一个标志位之后的字符串。不会包含分隔符<br/>
 	 * 如果sourceStr为empty或者expr为null，直接返回源字符串。<br/>
 	 * 如果expr长度为0，直接返回sourceStr。<br/>
 	 * 如果expr在sourceStr中不存在，直接返回sourceStr。<br/>
@@ -1401,7 +1410,10 @@ public class StrUtil {
 	}
 
 	/**
-	 * 功能：截取出最后一个标志位之前的字符串.<br/>
+	 * 功能：截取出最后一个标志位之前的字符串。不会包含分隔符<br/>
+	 * 如：sourceStr:atgeretg.super<br>
+	 * expr:.<br>
+	 * 返回：atgeretg
 	 * 如果sourceStr为empty或者expr为null，直接返回源字符串。<br/>
 	 * 如果expr长度为0，直接返回sourceStr。<br/>
 	 * 如果expr在sourceStr中不存在，直接返回sourceStr。<br/>
@@ -1429,7 +1441,7 @@ public class StrUtil {
 	}
 
 	/**
-	 * 功能：截取出第一个标志位之后的字符串.<br/>
+	 * 功能：截取出第一个标志位之后的字符串。不会包含分隔符<br/>
 	 * 如果sourceStr为empty或者expr为null，直接返回源字符串。<br/>
 	 * 如果expr长度为0，直接返回sourceStr。<br/>
 	 * 如果expr在sourceStr中不存在，直接返回sourceStr。<br/>
@@ -1458,7 +1470,7 @@ public class StrUtil {
 	}
 
 	/**
-	 * 功能：截取出第一个标志位之前的字符串.<br/>
+	 * 功能：截取出第一个标志位之前的字符串。不会包含分隔符<br/>
 	 * 如果sourceStr为empty或者expr为null，直接返回源字符串。<br/>
 	 * 如果expr长度为0，直接返回sourceStr。<br/>
 	 * 如果expr在sourceStr中不存在，直接返回sourceStr。<br/>

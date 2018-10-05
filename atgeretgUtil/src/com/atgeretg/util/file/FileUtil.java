@@ -35,6 +35,18 @@ public class FileUtil {
 	public static final String UTF16 = "UTF-16";
 	public static final String DOT = ".";
 	public static final String SLASH = "/";
+	
+//	public static void main(String[] args) {
+//		System.out.println(getSystemUserHome());
+//	}
+	
+	/**
+	 * 获取系统当前用户的路径
+	 * @return
+	 */
+	public static String getSystemUserHome() {
+		return System.getProperties().getProperty("user.home");
+	}
 
 	/**
 	 * 创建文件夹，存在则将存在文件夹重命名，存在时又不是文件夹，则将文件重命名

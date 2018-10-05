@@ -113,7 +113,8 @@ public class DateUtil {
 	public static SimpleDateFormat dataTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(calcDateAtRange(new Date(), 15, 5, 20, 30));
+//		System.out.println(formatDataStrSlash());
+//		System.out.println(calcDateAtRange(new Date(), 15, 5, 20, 30));
 //		Date d = addDate4Year(new Date(), 1);// 
 //		Date formatSmart = formatSmart("2007/09/8");
 //		Date date = formatStringToDate("2007/9/08", Y_M_D);
@@ -682,6 +683,26 @@ public class DateUtil {
 		return newDateFormat("yyyy年MM月dd日").format(date);
 	}
 
+	/**
+	 * "yyyy/MM/dd"日期格式
+	 * @return
+	 */
+	public static String formatDataStrSlash() {
+		return newShortYMDFormat_().format(new Date());
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	/**
+	 * "yyyy/MM/dd"日期格式,传入的日期
+	 * @param date
+	 * @return
+	 */
+	public static String formatDataStrSlash(Date date) {
+		return newShortYMDFormat_().format(date);
+	}
+	
 	/**
 	 * 获得"yyyyMMddHHmmss"格式的当前日期
 	 * 

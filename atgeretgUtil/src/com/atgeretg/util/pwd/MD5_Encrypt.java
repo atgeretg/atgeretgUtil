@@ -1,4 +1,4 @@
-package com.atgeretg.util.MD5;
+package com.atgeretg.util.pwd;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -6,13 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 import com.atgeretg.util.file.FileUtil;
 
-public class BackMD5 {
-//	public static void main(String[] args) {
-//		String md5_1 = getMD5("1016701");
-//		System.out.println(md5_1);
-//		String md5_2 = getMD5(md5_1);
-//		System.out.println(md5_2);
-//	}
+public class MD5_Encrypt {
 	
 	/**
 	 * 用UFF8格式读取转码
