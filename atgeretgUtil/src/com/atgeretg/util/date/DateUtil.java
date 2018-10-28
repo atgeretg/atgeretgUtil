@@ -113,6 +113,7 @@ public class DateUtil {
 	public static SimpleDateFormat dataTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static void main(String[] args) throws Exception {
+		System.out.println(getMonthStr(addDate4Day(new Date(),-100)));
 //		System.out.println(formatDataStrSlash());
 //		System.out.println(calcDateAtRange(new Date(), 15, 5, 20, 30));
 //		Date d = addDate4Year(new Date(), 1);// 
@@ -1044,7 +1045,7 @@ public class DateUtil {
 		
 		int hour = getHour(now);
 		int minute = getMinute(now);
-		int second = getSecond2(now);
+		int second = getSecond(now);
 		long longNowTime = hour* 3600 + minute*60+second;
 		startHour = NumTool.isAtIntervalBothCloseRe(startHour, 0, 23,23);
 		endHour =  NumTool.isAtIntervalBothCloseRe(endHour, 0, 23,23);
@@ -1692,9 +1693,24 @@ public class DateUtil {
 		c.setTime(date);
 		return c.get(Calendar.MONTH) + 1;
 	}
+	
+	/**
+	 * 功能：获取日期的两位数的月，日期为null默认当前时间
+	 * 
+	 * @param date
+	 * @return 返回日期两位数的月份
+	 */
+	public static String getMonthStr(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return String.format("%02d", c.get(Calendar.MONTH) + 1);
+	}
 
 	/**
-	 * 功能：获取日期的日，日期为null默认当前时间
+	 * 功能：获取日期的两位数的日，日期为null默认当前时间
 	 * 
 	 * @param date
 	 * @return 返回日期 日（几号）
@@ -1706,6 +1722,21 @@ public class DateUtil {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.DAY_OF_MONTH);
+	}
+	
+	/**
+	 * 功能：获取日期的日，日期为null默认当前时间
+	 * 
+	 * @param date
+	 * @return 返回两位数的日期 日（几号）
+	 */
+	public static String getDayStr(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return String.format("%02d",c.get(Calendar.DAY_OF_MONTH));
 	}
 
 	/**
@@ -1722,7 +1753,24 @@ public class DateUtil {
 		c.setTime(date);
 		return c.get(Calendar.HOUR_OF_DAY);
 	}
+	
+	/**
+	 * 功能：获取日期的两位数的小时数（几点），日期为null默认当前时间
+	 * 
+	 * @param date
+	 * @return 两位数的（几点）
+	 */
+	public static String getHourStr(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return String.format("%02d", c.get(Calendar.HOUR_OF_DAY));
+	}
 
+	
+	
 	/**
 	 * 功能：获取日期的分钟数（几分），日期为null默认当前时间
 	 * 
@@ -1737,6 +1785,21 @@ public class DateUtil {
 		c.setTime(date);
 		return c.get(Calendar.MINUTE);
 	}
+	
+	/**
+	 * 功能：获取日期的两位数的分钟数（几分），日期为null默认当前时间
+	 * 
+	 * @param date
+	 * @return 两位数的 几分
+	 */
+	public static String getMinuteStr(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return String.format("%02d",c.get(Calendar.MINUTE));
+	}
 
 	/**
 	 * 功能：获取日期的秒钟数（几秒），日期为null默认当前时间
@@ -1744,13 +1807,28 @@ public class DateUtil {
 	 * @param date
 	 * @return 几秒
 	 */
-	public static int getSecond2(Date date) {
+	public static int getSecond(Date date) {
 		if (date == null) {
 			date = new Date();
 		}
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.SECOND);
+	}
+	
+	/**
+	 * 功能：获取日期的两位数的秒钟数（几秒），日期为null默认当前时间
+	 * 
+	 * @param date
+	 * @return 两位数的 几秒
+	 */
+	public static String getSecondStr(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return String.format("%02d",c.get(Calendar.SECOND));
 	}
 
 	/**

@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,17 +27,19 @@ import org.apache.http.conn.util.PublicSuffixMatcher;
 import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.atgeretg.util.file.FileUtil;
-import com.atgeretg.util.url.UrlUtil;
+import com.atgeretg.util.json.ali.JacksonUtil;
 
 /**
  * 这个可以设置时间，HttpClientenctUtil是不能设置时间，按需求选择，功能是一样的
@@ -50,26 +55,51 @@ public class HttpClientUtilTime {
 	private HttpClientUtilTime() {
 	}
 
-//	public static void main(String[] args) {
+	public static void main(String[] args) {
 //		String pathGet = "http://127.0.0.1:8080/nobodyService/testOutTimeConnect1";// %25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar";
-//		// String name = pathGet.split("download=")[1];
-//		// String decoderString =
-//		// UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
-//		// String decoderString2 = UrlUtil.getURLDecoderString(name);
-////		HttpClientUtilTime.getInstance(500).httpDownload(pathGet + UrlUtil.getURLEncoderString("商品上架1-15.jar", 2),
-////				"E:\\tool.jar");
-//
+		// String name = pathGet.split("download=")[1];
+		// String decoderString =
+		// UrlUtil.getURLDecoderString("%25E5%2595%2586%25E5%2593%2581%25E4%25B8%258A%25E6%259E%25B61-15.jar");
+		// String decoderString2 = UrlUtil.getURLDecoderString(name);
+//		HttpClientUtilTime.getInstance(500).httpDownload(pathGet + UrlUtil.getURLEncoderString("商品上架1-15.jar", 2),
+//				"E:\\tool.jar");
+
 //		String sendHttpGet = HttpClientUtilTime.getInstance(7000).sendHttpGet(pathGet);
 //		System.out.println(sendHttpGet);
-//		
-//		
-//		// System.out.println(decoderString + "\ndecoderString2 = " +decoderString2);
-//		// pathGet+"商品上架1-15.jar";
-//	}
+		
+		 FormsInfo formsInfo = new FormsInfo();
+//       formsInfo.setPhysicalPhotoPath("E://2018/192.168.1.64_01_20180103_.jpg");
+//       formsInfo.setStandardPhotoPath("E://2018/192.168.1.64_01_20180103_.jpg");
+       formsInfo.setBedNum("TG-656-FD656265-56235623");
+       formsInfo.setCustomerName("张一蛋");
+       formsInfo.setHeadSideNum("MD-656-FFD265-56235623");
+       formsInfo.setLegSideNum("DF-5DFD_CG5522E5596");
+       formsInfo.setInspectionDate(new Date());
+       formsInfo.setInspectorName("张全蛋");
+       formsInfo.setInspectorNumber("002");
+       formsInfo.setProductionLine("01");
+       formsInfo.setProductName("King");
+       formsInfo.setManufacturingSuperviso("张二蛋");
+       formsInfo.setPoNum("PP05");
+       formsInfo.setProductType("张三蛋型");
+       formsInfo.setQcSupervisor("张四蛋");
+       formsInfo.setProductPass(1);
+       File file = new File("E://2018/192.168.1.64_01_20180103161016546.jpg");
+       String json = JacksonUtil.toJson(formsInfo);
+       
+       String httpUrl = "http://127.0.0.1:8080/factory/formsInfo/insert/uploadFile/formsInfo";
+       Map<String,String> maps = new HashMap<>();
+       maps.put("data", json);
+       HttpClientUtilTime t = getInstance(15000);
+       String sendHttpPost = t.sendHttpPost(httpUrl, maps, file);
+       System.out.println("sendHttpPost = "+sendHttpPost);
+		// System.out.println(decoderString + "\ndecoderString2 = " +decoderString2);
+		// pathGet+"商品上架1-15.jar";
+	}
 
 	/**
-	 * 设置获取数据等待时间，最小10秒，最大10分
-	 * @param socketOutTime
+	 * 设置获取数据等待时间，最小10秒，最大10分,单位：ms
+	 * @param socketOutTime ms
 	 * @return
 	 */
 	public static HttpClientUtilTime getInstance(int socketOutTime) {
@@ -144,6 +174,36 @@ public class HttpClientUtilTime {
 		}
 		return sendHttpPost(httpPost);
 	}
+	
+	/**
+	 * 发送 post请求（带文件）
+	 * 
+	 * @param httpUrl
+	 *            地址
+	 * @param maps
+	 *            参数
+	 * @param fileLists
+	 *            附件
+	 */
+	public String sendHttpPost(String httpUrl, Map<String, String> maps, File file) {
+		HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
+		// httpPost.addHeader("Content-type","charset=utf-8");
+		MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+		meBuilder.setCharset(Charset.forName("utf-8"));
+		meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+		for (String key : maps.keySet()) {
+			meBuilder.addPart(key, new StringBody(maps.get(key), contentType));
+		}
+		if (file != null) {
+			FileBody fileBody = new FileBody(file);
+			meBuilder.addPart("file", fileBody);
+		}
+
+		HttpEntity reqEntity = meBuilder.build();
+		httpPost.setEntity(reqEntity);
+		return sendHttpPost(httpPost);
+	}
 
 	/**
 	 * 发送 post请求（带文件）
@@ -158,12 +218,19 @@ public class HttpClientUtilTime {
 	public String sendHttpPost(String httpUrl, Map<String, String> maps, List<File> fileLists) {
 		HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
 		MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+		meBuilder.setCharset(Charset.forName("utf-8"));
+		meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+//		Image i= Image.
 		for (String key : maps.keySet()) {
-			meBuilder.addPart(key, new StringBody(maps.get(key), ContentType.TEXT_PLAIN));
+//			meBuilder.addPart(key, new StringBody(maps.get(key), ContentType.TEXT_PLAIN));//ISO-8859-1
+			meBuilder.addPart(key, new StringBody(maps.get(key), contentType));
 		}
-		for (File file : fileLists) {
-			FileBody fileBody = new FileBody(file);
-			meBuilder.addPart("files", fileBody);
+		if (fileLists != null) {
+			for (File file : fileLists) {
+				FileBody fileBody = new FileBody(file);
+				meBuilder.addPart("files", fileBody);
+			}
 		}
 		HttpEntity reqEntity = meBuilder.build();
 		httpPost.setEntity(reqEntity);
@@ -362,5 +429,235 @@ public class HttpClientUtilTime {
 		}
 		return null;
 	}
+	
+	
+	
+	public static class FormsInfo {
+	    private Integer formsId;
+
+	    private Date formsDate;
+
+	    private String inspectorNumber;
+
+	    private String inspectorName;
+
+	    private String customerName;
+
+	    private String productionLine;
+
+	    private String poNum;
+
+	    private String productType;
+
+	    private String productName;
+
+	    private String manufacturingSuperviso;
+
+	    private String qcSupervisor;
+
+	    private String bedNum;
+
+	    private String headSideNum;
+
+	    private String legSideNum;
+
+	    private Date inspectionDate;
+
+	    private String standardPhotoPath;
+
+	    private String physicalPhotoPath;
+
+	    private String pdfStandardPhotoPath;
+
+	    private String pdfPhysicalPhotoPath;
+
+	    private String pdfFilePath;
+
+	    private Integer productPass;
+
+	    private String formsRemark;
+
+
+	    public String getPdfStandardPhotoPath() {
+	        return pdfStandardPhotoPath;
+	    }
+
+	    public void setPdfStandardPhotoPath(String pdfStandardPhotoPath) {
+	        this.pdfStandardPhotoPath = pdfStandardPhotoPath;
+	    }
+
+	    public String getPdfPhysicalPhotoPath() {
+	        return pdfPhysicalPhotoPath;
+	    }
+
+	    public void setPdfPhysicalPhotoPath(String pdfPhysicalPhotoPath) {
+	        this.pdfPhysicalPhotoPath = pdfPhysicalPhotoPath;
+	    }
+
+	    public Integer getFormsId() {
+	        return formsId;
+	    }
+
+	    public void setFormsId(Integer formsId) {
+	        this.formsId = formsId;
+	    }
+
+	    public Date getFormsDate() {
+	        return formsDate;
+	    }
+
+	    public void setFormsDate(Date formsDate) {
+	        this.formsDate = formsDate;
+	    }
+
+	    public String getInspectorNumber() {
+	        return inspectorNumber;
+	    }
+
+	    public void setInspectorNumber(String inspectorNumber) {
+	        this.inspectorNumber = inspectorNumber == null ? null : inspectorNumber.trim();
+	    }
+
+	    public String getInspectorName() {
+	        return inspectorName;
+	    }
+
+	    public void setInspectorName(String inspectorName) {
+	        this.inspectorName = inspectorName == null ? null : inspectorName.trim();
+	    }
+
+	    public String getCustomerName() {
+	        return customerName;
+	    }
+
+	    public void setCustomerName(String customerName) {
+	        this.customerName = customerName == null ? null : customerName.trim();
+	    }
+
+	    public String getProductionLine() {
+	        return productionLine;
+	    }
+
+	    public void setProductionLine(String productionLine) {
+	        this.productionLine = productionLine == null ? null : productionLine.trim();
+	    }
+
+	    public String getPoNum() {
+	        return poNum;
+	    }
+
+	    public void setPoNum(String poNum) {
+	        this.poNum = poNum == null ? null : poNum.trim();
+	    }
+
+	    public String getProductType() {
+	        return productType;
+	    }
+
+	    public void setProductType(String productType) {
+	        this.productType = productType == null ? null : productType.trim();
+	    }
+
+	    public String getProductName() {
+	        return productName;
+	    }
+
+	    public void setProductName(String productName) {
+	        this.productName = productName == null ? null : productName.trim();
+	    }
+
+	    public String getManufacturingSuperviso() {
+	        return manufacturingSuperviso;
+	    }
+
+	    public void setManufacturingSuperviso(String manufacturingSuperviso) {
+	        this.manufacturingSuperviso = manufacturingSuperviso == null ? null : manufacturingSuperviso.trim();
+	    }
+
+	    public String getQcSupervisor() {
+	        return qcSupervisor;
+	    }
+
+	    public void setQcSupervisor(String qcSupervisor) {
+	        this.qcSupervisor = qcSupervisor == null ? null : qcSupervisor.trim();
+	    }
+
+	    public String getBedNum() {
+	        return bedNum;
+	    }
+
+	    public void setBedNum(String bedNum) {
+	        this.bedNum = bedNum == null ? null : bedNum.trim();
+	    }
+
+	    public String getHeadSideNum() {
+	        return headSideNum;
+	    }
+
+	    public void setHeadSideNum(String headSideNum) {
+	        this.headSideNum = headSideNum == null ? null : headSideNum.trim();
+	    }
+
+	    public String getLegSideNum() {
+	        return legSideNum;
+	    }
+
+	    public void setLegSideNum(String legSideNum) {
+	        this.legSideNum = legSideNum == null ? null : legSideNum.trim();
+	    }
+
+	    public Date getInspectionDate() {
+	        return inspectionDate;
+	    }
+
+	    public void setInspectionDate(Date inspectionDate) {
+	        this.inspectionDate = inspectionDate;
+	    }
+
+	    public String getStandardPhotoPath() {
+	        return standardPhotoPath;
+	    }
+
+	    public void setStandardPhotoPath(String standardPhotoPath) {
+	        this.standardPhotoPath = standardPhotoPath == null ? null : standardPhotoPath.trim();
+	    }
+
+	    public String getPhysicalPhotoPath() {
+	        return physicalPhotoPath;
+	    }
+
+	    public void setPhysicalPhotoPath(String physicalPhotoPath) {
+	        this.physicalPhotoPath = physicalPhotoPath == null ? null : physicalPhotoPath.trim();
+	    }
+
+	    public String getPdfFilePath() {
+	        return pdfFilePath;
+	    }
+
+	    public void setPdfFilePath(String pdfFilePath) {
+	        this.pdfFilePath = pdfFilePath == null ? null : pdfFilePath.trim();
+	    }
+
+	    public Integer getProductPass() {
+	        return productPass;
+	    }
+
+	    public void setProductPass(Integer productPass) {
+	        this.productPass = productPass;
+	    }
+
+	    public String getFormsRemark() {
+	        return formsRemark;
+	    }
+
+	    public void setFormsRemark(String formsRemark) {
+	        this.formsRemark = formsRemark == null ? null : formsRemark.trim();
+	    }
+	}
+	
+	
+	
+	
+	
 
 }
