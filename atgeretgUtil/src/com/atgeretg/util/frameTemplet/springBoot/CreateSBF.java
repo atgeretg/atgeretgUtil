@@ -271,7 +271,6 @@ public class CreateSBF {
 	 *
 	 * @param mapperName
 	 * @param entityName
-	 * @param first
 	 */
 	private void reConfMapper(String mapperName, String entityName) {
 		if (strArrContains(ingoredMapper, entityName))// 包含过虑的则不处理
@@ -285,10 +284,10 @@ public class CreateSBF {
 		// String[] split = content.split("interface");
 		String extendStr = "package {0};\n" + "\n" + "import {1};\n" + "import {2};\n" + "\n"
 				+ "public interface {3} extends {6} <{4},{5}>'{'\n\n'}'";
-		String calssContent = MessageFormat.format(extendStr, mapperPackage, entityPackageDot + entityName,
+		String classContent = MessageFormat.format(extendStr, mapperPackage, entityPackageDot + entityName,
 				entityPackageDot + entityName + Example, mapperName, entityName, entityName + Example, baseMapper);
-		// System.out.println(calssContent);
-		FileUtil.saveFile4Str(calssContent, file.getPath(), encode, true);
+		// System.out.println(classContent);
+		FileUtil.saveFile4Str(classContent, file.getPath(), encode, true);
 	}
 
 	/**
@@ -301,10 +300,13 @@ public class CreateSBF {
 				+ "import org.slf4j.Logger;\n" + "import org.slf4j.LoggerFactory;\n"
 				+ "import org.springframework.beans.factory.annotation.Autowired;\n" + "\n"
 				+ "import javax.annotation.PostConstruct;\n" + "import java.lang.reflect.Field;\n"
-				+ "import java.lang.reflect.ParameterizedType;\n" + "import java.util.List;\n" + "\n"
+				+ "import java.lang.reflect.ParameterizedType;\n" + "import java.util.List;\n" + "import java.util.HashMap;\n" +
+				"import java.util.Map;\n"
 				+ "public class %s<T, TM> implements BaseService<T, TM> {\n" + "\n"
 				+ "    private Class clazzT; // clazz中存储了当前操作的类型，即泛型T\n"
-				+ "    private Class clazzTM; // clazz中存储了当前操作的类型，即泛型T\n" + "    protected Logger logger;\n"
+				+ "    private Class clazzTM; // clazz中存储了当前操作的类型，即泛型T\n"
+				+ "    protected Logger logger = LoggerFactory.getLogger(this.getClass());\n"
+				+ "		private Map<Thread, String> curErrorMap = new HashMap<>();\n"
 				+ "    protected String error;\n" + "    // @Resource //baseDao是泛型，不能够注入只能通过上面的init方法赋值\n"
 				+ "    private %s mapperBase;// = new BaseDaoImpl<T>();\n" + "\n" + "    public %s() {\n"
 				+ "        // System.out.println(\"this代表BaseServiceImpl的是当前调用构造方法的对象\" + this);\n"
@@ -323,7 +325,7 @@ public class CreateSBF {
 				+ "        String clazzToName = clazzName.substring(0, 1).toLowerCase() + clazzName.substring(1);\n"
 				+ "        String clazzMapper = clazzToName + \"Mapper\"; // 例如Account==>accountDao\n"
 				+ "        System.out.println(\"BaseServiceImpl calssMapper = \" + clazzMapper);\n"
-				+ "        logger = LoggerFactory.getLogger(clazzToName + \"ServiceImpl\");//getLogger(clazzToName + \"ServiceImpl\");\n"
+				+ "        //logger = LoggerFactory.getLogger(clazzToName + \"ServiceImpl\");//getLogger(clazzToName + \"ServiceImpl\");\n"
 				+ "        try {\n" + "//             Field clazzField = this.getClass().getField(clazzMapper);\n"
 				+ "//             Field baseField = this.getClass().getField(\"mapperBase\");\n"
 				+ "            Field clazzField = this.getClass().getSuperclass().getDeclaredField(clazzMapper);\n"
@@ -334,7 +336,40 @@ public class CreateSBF {
 				+ "//             clazzField.get(this).getClass().getName()+ \" mapperBase =\" + mapperBase);\n"
 				+ "        } catch (Exception e) {\n" + "            logger.error(\"init error\", e);\n"
 				+ "            throw new RuntimeException(e);\n" + "        }\n" + "    }\n" + "\n" + "   %s\n" + "\n"
-				+ "\n" + "    @Override\n" + "    public long countByExample(TM example) {\n"
+				+ "\n"
+				+"/**\n" +
+				"     * 设置错误信息并返回false\n" +
+				"     *\n" +
+				"     * @param error\n" +
+				"     */\n" +
+				"    protected boolean setError(String error) {\n" +
+				"        curErrorMap.put(Thread.currentThread(), error);\n" +
+				"        return false;\n" +
+				"    }\n" +
+				"\n" +
+				"    /**\n" +
+				"     * 设置错误信息并返回Object\n" +
+				"     *\n" +
+				"     * @param error\n" +
+				"     */\n" +
+				"    protected Object setErrorObj(String error) {\n" +
+				"        curErrorMap.put(Thread.currentThread(), error);\n" +
+				"        return null;\n" +
+				"    }\n" +
+				"\n" +
+				"    @Override\n" +
+				"    public String getError() {\n" +
+				"        String curError = curErrorMap.get(Thread.currentThread());\n" +
+				"        curErrorMap.remove(Thread.currentThread());\n" +
+				"//        logger.debug(\"getError \"+Thread.currentThread().getName());\n" +
+				"        return curError;\n" +
+				"    }\n" +
+				"\n" +
+				"    @Override\n" +
+				"    public String getErrorKeep() {\n" +
+				"        return curErrorMap.get(Thread.currentThread());\n" +
+				"    }\n"+ "    @Override\n"
+				+ "    public long countByExample(TM example) {\n"
 				+ "        return mapperBase.countByExample(example);\n" + "    }\n" + "\n" + "    @Override\n"
 				+ "    public int deleteByExample(TM example) {\n"
 				+ "        return mapperBase.deleteByExample(example);\n" + "    }\n" + "\n" + "    @Override\n"
@@ -358,6 +393,17 @@ public class CreateSBF {
 
 		String baseServiceInterface = "package %s;\n" + "\n" + "import org.apache.ibatis.annotations.Param;\n" + "\n"
 				+ "import java.util.List;\n" + "\n" + "public interface %s<T,TM> {\n" + "\n"
+				+"/**\n" +
+				"     * 获取当前线程保存的错误，获取后将清空\n" +
+				"     * @return\n" +
+				"     */\n" +
+				"    String getError();\n" +
+				"\n" +
+				"    /**\n" +
+				"     * 获取当前线程保存的错误，获取后不清空，还将保留，多次取其时用\n" +
+				"     * @return\n" +
+				"     */\n" +
+				"    String getErrorKeep();"
 				+ "    long countByExample(TM example);\n" + "\n" + "    int deleteByExample(TM example);\n" + "\n"
 				+ "    int deleteByPrimaryKey(Integer id);\n" + "\n" + "    int insert(T record);\n" + "\n"
 				+ "    int insertSelective(T record);\n" + "\n" + "    List<T> selectByExample(TM example);\n" + "\n"
@@ -448,7 +494,8 @@ public class CreateSBF {
 		if (strArrContains(ingoredController, entityName))// 包含过虑的则不处理
 			return;
 		String controllerContent = "package {0};\n" + // com.djotimes.nobodyService.controller
-				"\n" + "import {1};\n" + // com.djotimes.nobodyService.controller.commons.BaseController
+				"\n" + "import {1};\n" + "import org.slf4j.Logger;\n" +
+				"import org.slf4j.LoggerFactory;\n"+// com.djotimes.nobodyService.controller.commons.BaseController
 				"import {2};\n" + // com.djotimes.nobodyService.entity.DjAdmin
 				"import org.springframework.stereotype.Controller;\n" + "\n" + "@Controller\n"
 				+ "public class {3} extends BaseController<{4}> '{'\n\n'}'";
@@ -481,6 +528,7 @@ public class CreateSBF {
 				+ "public class BaseController<T> {\n" + "    \n" + "    \n" + "%s\n" + "    \n"
 				+ "    // 用来装有将要被打包成json格式返回给前台的数据，下面要实现get方法\n" + "    protected List<T> jsonList = null;\n"
 				+ "    protected Map<String, Object> jsonMap;\n" + "\n"
+				+" protected Logger logger = LoggerFactory.getLogger(this.getClass());"+ "\n"
 				+ "    protected String statusMap(boolean success, String msg, Object data) {\n"
 				+ "        jsonMap = new HashMap<String, Object>();\n" + "        int intSuc = success ? 1 : 0;\n"
 				+ "        jsonMap.put(\"success\", intSuc);\n" + "        if(msg != null)\n"

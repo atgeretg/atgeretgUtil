@@ -113,7 +113,11 @@ public class DateUtil {
 	public static SimpleDateFormat dataTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(getMonthStr(addDate4Day(new Date(),-100)));
+//		System.out.println(getMonthStr(addDate4Day(new Date(),-100)));
+		Date date1 = formatStr2date("2018-1-31");
+		Date date4Month = addDate4Month(date1, 1);
+		System.out.println(formatDateStr(date4Month));
+
 //		System.out.println(formatDataStrSlash());
 //		System.out.println(calcDateAtRange(new Date(), 15, 5, 20, 30));
 //		Date d = addDate4Year(new Date(), 1);// 

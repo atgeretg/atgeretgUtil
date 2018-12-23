@@ -37,7 +37,7 @@ public class FileUtil {
 	public static final String SLASH = "/";
 	
 //	public static void main(String[] args) {
-//		System.out.println(getSystemUserHome());
+//		log.info(getSystemUserHome());
 //	}
 	
 	/**

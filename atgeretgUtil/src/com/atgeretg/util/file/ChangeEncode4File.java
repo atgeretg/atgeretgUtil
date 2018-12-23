@@ -27,21 +27,22 @@ public class ChangeEncode4File {
 		// String path1 =
 		// "E:\\atgeretg\\document\\java基于swing界面的管理系统\\卜帅JAVA项目答辩\\xiangmu12-30\\src\\wo\\ai\\ni";
 		String path1 = "E:\\atgeretg\\project\\java\\desk\\workspace\\snake\\src\\atgeretg\\snake\\util";
-		String gbkPath = "E:\\atgeretg\\test\\U2G_gbk.txt";// "E:\\atgeretg\\document\\java基于swing界面的管理系统\\卜帅JAVA项目答辩\\xiangmu12-30\\src";
+		String gbkPath = "C:\\Users\\hyt009\\Desktop\\JDY-BLE-SDK-android-V1.5\\JDY-BLE\\src\\com\\example";// "E:\\atgeretg\\document\\java基于swing界面的管理系统\\卜帅JAVA项目答辩\\xiangmu12-30\\src";
 		// String path = "E:\\atgeretg\\document\\";
 		// System.out.println(StrUtil.substringAfterLast(path1, path));
-		String utf8Path = "E:\\atgeretg\\test\\U2G_utf8.txt";
+//		String utf8Path = "E:\\project\\android\\DoorLock\\app\\src\\main\\java\\com\\door\\hyt\\doorlock";
+		String utf8Path = "E:\\project\\android\\doorlockTTT";
 		// getFile(path,savePath,"GBK","UTF-8");
 		// getFile(savePath,path);
-		ChangeEncode4File U2G = new ChangeEncode4File(StrUtil.UTF8,StrUtil.GBK);
-		U2G.save4clear(utf8Path, gbkPath);
-		
+		ChangeEncode4File G2U = new ChangeEncode4File(StrUtil.GBK,StrUtil.UTF8);
+//		U2G.save4clear(utf8Path, gbkPath);
+		G2U.save4keep(gbkPath,utf8Path);
 		
 		//////////////////////////////////////
-		gbkPath = "E:\\atgeretg\\test\\G2U_gbk.txt";
-		utf8Path = "E:\\atgeretg\\test\\G2U_Utf8.txt";
-		ChangeEncode4File G2U = new ChangeEncode4File(StrUtil.GBK,StrUtil.UTF8);
-		G2U.save4clear(gbkPath,utf8Path);
+//		gbkPath = "E:\\atgeretg\\test\\G2U_gbk.txt";
+//		utf8Path = "E:\\atgeretg\\test\\G2U_Utf8.txt";
+//		ChangeEncode4File G2U = new ChangeEncode4File(StrUtil.GBK,StrUtil.UTF8);
+//		G2U.save4clear(gbkPath,utf8Path);
 		
 	}
 
