@@ -114,9 +114,15 @@ public class DateUtil {
 
 	public static void main(String[] args) throws Exception {
 //		System.out.println(getMonthStr(addDate4Day(new Date(),-100)));
-		Date date1 = formatStr2date("2018-1-31");
-		Date date4Month = addDate4Month(date1, 1);
-		System.out.println(formatDateStr(date4Month));
+//		Date date1 = formatStr2date("2018-1-31");
+//		Date date4Month = addDate4Month(date1, 1);
+//		System.out.println(formatDateStr(date4Month));
+		Date setDate = DateUtil.getDatePosition(-9);//formatStr2date("2018-5-5");//new Date();
+		List<Date> dateList = getSetDatePositionDate(setDate,5,-1,true);//DateUtil.getDatePositionDate(5, -1,true);
+		for(Date date : dateList){
+//			System.out.println(date);
+			System.out.println(DateUtil.formatDateStr_ss(date));
+		}
 
 //		System.out.println(formatDataStrSlash());
 //		System.out.println(calcDateAtRange(new Date(), 15, 5, 20, 30));
@@ -378,7 +384,7 @@ public class DateUtil {
 	 * 根据指定的日期得到格式为 "yyyy-MM-dd"的Date<br>
 	 * 没什么必要，可以直接创建 new java.sql.Date(date.getTime())
 	 * 
-	 * @param Date
+	 * @param
 	 *            date 日期对象
 	 * @return java.sql.Date
 	 */
@@ -618,7 +624,7 @@ public class DateUtil {
 	/**
 	 * 将日期格式化为 "yyyy-MM-dd" 字符串
 	 * 
-	 * @param Date
+	 * @param
 	 *            date 日期对象
 	 * @return String "yyyy-MM-dd" 字符串
 	 */
@@ -638,7 +644,7 @@ public class DateUtil {
 	/**
 	 * 将日期格式化为 "yyyy-MM-dd HH:mm:ss"
 	 * 
-	 * @param Date
+	 * @param
 	 *            date 日期对象
 	 * @return "yyyy-MM-dd HH:mm:ss"字符串
 	 */
@@ -658,7 +664,7 @@ public class DateUtil {
 	/**
 	 * 获得"yyyyMMdd"格式的当前日期
 	 * 
-	 * @param Date
+	 * @param
 	 *            date 日期对象
 	 * @return 返回"yyyyMMdd"格式的当前日期
 	 */
@@ -680,7 +686,7 @@ public class DateUtil {
 	 * 
 	 * 获取当前日期 :yyyy年MM月dd日
 	 * 
-	 * @param Date
+	 * @param
 	 *            date 日期对象
 	 * @return
 	 */
@@ -720,7 +726,7 @@ public class DateUtil {
 	/**
 	 * 获得"yyyyMMddHHmmss"格式的当前日期
 	 * 
-	 * @param Date
+	 * @param
 	 *            date 日期对象
 	 * @return 返回"yyyyMMddHHmmss"格式的当前时间
 	 */
@@ -740,7 +746,7 @@ public class DateUtil {
 	/**
 	 * 获得"yyyymmddhhmmssSSS"格式的当前日期(时间戳)
 	 * 
-	 * @param Date
+	 * @param
 	 *            date 日期对象
 	 * @return 返回"yyyymmddhhmmssSSS"格式的当前时间
 	 */
@@ -1035,7 +1041,7 @@ public class DateUtil {
 	 * 与给出（转入）的时间为日期为准，判断是否在指定时间（小时、分钟）段内<br>
 	 * 如：“nowTime = 2018-9-16 19:56:09” “startHour = 8” “startMin = 30” “startSceond= 0”<br>
 	 *  “endHour = 20” “endMin = 10” “endSceond= 0”；返回true
-	 * @param nowTime
+	 * @param now
 	 * @param startHour
 	 * @param startMin
 	 * @param startSecond
@@ -1617,7 +1623,7 @@ public class DateUtil {
 	public static Date getDateByHourAdd(Date date, int hours) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		calendar.add(Calendar.HOUR, hours);
+		calendar.add(Calendar.HOUR_OF_DAY, hours);
 		return calendar.getTime();
 	}
 
@@ -2021,14 +2027,11 @@ public class DateUtil {
 	/**
 	 * 当前时间加、减days
 	 * 
-	 * @param shortYMD
-	 * @param diffDay
+	 * @param diffDay 天数；负数向前移（过去）移动，正数向后移（未来）移动
 	 * @return "yyyy年MM月dd日 HH时mm分"格式的字符串
 	 */
 	public static String getAddDay(int diffDay) {
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_MONTH, diffDay);
-		return newDateFormat("yyyy年MM月dd日 HH时mm分").format(c.getTime());
+		return newDateFormat("yyyy年MM月dd日 HH时mm分").format(getDatePosition(diffDay));
 	}
 
 	/**
@@ -2240,7 +2243,7 @@ public class DateUtil {
 	 * 获取当天的日期向前移（过去）或向后移（未来）的String的list集合，direction是每次移动的天数
 	 * 
 	 * @param n
-	 *            推（移动）的次数
+	 *             推（移动）的次数（天数）
 	 * @param direction
 	 *            推（移动）的方向，向前移（过去）或向后移（未来）<br>
 	 *            负数向前移（过去）移动，正数向后移（未来）移动
@@ -2291,7 +2294,7 @@ public class DateUtil {
 	 * 获取当天的日期向前移（过去）或向后移（未来）的String的list集合，direction是每次移动的天数
 	 * 
 	 * @param n
-	 *            推（移动）的次数
+	 *             推（移动）的次数（天数）
 	 * @param direction
 	 *            推（移动）的方向，向前移（过去）或向后移（未来）<br>
 	 *            负数向前移（过去）移动，正数向后移（未来）移动
@@ -2313,10 +2316,86 @@ public class DateUtil {
 	}
 
 	/**
+	 * 获取当天的日期向前移（过去）或向后移（未来）的Date的list集合，direction是每次移动的天数，可设置是否清空数据
+	 *
+	 * @param n
+	 *             推（移动）的次数（天数）
+	 * @param direction
+	 *            推（移动）的方向，向前移（过去）或向后移（未来）的天数<br>
+	 *            负数向前移（过去）移动，正数向后移（未来）移动
+	 * @param timeZero 时间是否设置成0时
+	 * @return List<String>
+	 */
+	public static List<Date> getDatePositionDate(int n, int direction,boolean timeZero) {
+		Calendar calendar = Calendar.getInstance();
+//		if(timeZero) {
+//			calendar.set(Calendar.HOUR, 0);
+//			calendar.set(Calendar.MINUTE, 0);
+//			calendar.set(Calendar.SECOND, 0);
+//		}
+//		List<Date> dateList = new ArrayList<Date>();
+//		for (int i = 0; i <= n; i++) {
+//
+//			dateList.add(calendar.getTime());
+//			calendar.add(Calendar.DATE, direction);// 让日期加变化
+//
+//		}
+		return getSetDatePositionDate(calendar,n,direction,timeZero);
+	}
+
+	/**
+	 * 获取指定的日期向前移（过去）或向后移（未来）的Date的list集合，direction是每次移动的天数，可设置是否清空数据
+	 *
+	 * @param date 指定的日期对象
+	 * @param n
+	 *            推（移动）的次数（天数）
+	 * @param direction
+	 *            推（移动）的方向，向前移（过去）或向后移（未来）的天数<br>
+	 *            负数向前移（过去）移动，正数向后移（未来）移动
+	 * @param timeZero 时间是否设置成0时
+	 * @return List<String>
+	 */
+	public static List<Date> getSetDatePositionDate(Date date,int n, int direction,boolean timeZero) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return getSetDatePositionDate(calendar,n,direction,timeZero);
+	}
+
+	/**
+	 * 获取指定的日期向前移（过去）或向后移（未来）的Date的list集合，direction是每次移动的天数，可设置是否清空数据
+	 *
+	 * @param calendar 指定的日历对象
+	 * @param n
+	 *            推（移动）的次数（天数）
+	 * @param direction
+	 *            推（移动）的方向，向前移（过去）或向后移（未来）的天数<br>
+	 *            负数向前移（过去）移动，正数向后移（未来）移动
+	 * @param timeZero 时间是否设置成0时
+	 * @return List<String>
+	 */
+	public static List<Date> getSetDatePositionDate(Calendar calendar,int n, int direction,boolean timeZero) {
+//		Calendar calendar = Calendar.getInstance();
+		if(timeZero) {
+			calendar.set(Calendar.HOUR_OF_DAY, 0);//设置小时数，24小时制
+//			calendar.set(Calendar.HOUR, 0);////设置小时数，12小时制
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+		}
+		List<Date> dateList = new ArrayList<Date>();
+		for (int i = 0; i <= n; i++) {
+
+			dateList.add(calendar.getTime());
+			calendar.add(Calendar.DATE, direction);// 让日期加变化
+
+		}
+		return dateList;
+	}
+
+	/**
 	 * 获取当天的日期向前移（过去）或向后移（未来）的Date的list集合，direction是每次移动的天数
 	 * 
 	 * @param n
-	 *            推（移动）的次数
+	 *             推（移动）的次数（天数）
 	 * @param direction
 	 *            推（移动）的方向，向前移（过去）或向后移（未来）的天数<br>
 	 *            负数向前移（过去）移动，正数向后移（未来）移动
@@ -2324,14 +2403,7 @@ public class DateUtil {
 	 * @return List<String>
 	 */
 	public static List<Date> getDatePositionDate(int n, int direction) {
-		Calendar calendar = Calendar.getInstance();
-		List<Date> dateList = new ArrayList<Date>();
-		for (int i = 0; i <= n; i++) {
-			dateList.add(calendar.getTime());
-			calendar.add(Calendar.DATE, direction);// 让日期加变化
-
-		}
-		return dateList;
+		return getDatePositionDate(n,direction,false);
 	}
 
 	/**

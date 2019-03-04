@@ -27,7 +27,7 @@ public class ChangeEncode4File {
 		// String path1 =
 		// "E:\\atgeretg\\document\\java基于swing界面的管理系统\\卜帅JAVA项目答辩\\xiangmu12-30\\src\\wo\\ai\\ni";
 		String path1 = "E:\\atgeretg\\project\\java\\desk\\workspace\\snake\\src\\atgeretg\\snake\\util";
-		String gbkPath = "C:\\Users\\hyt009\\Desktop\\JDY-BLE-SDK-android-V1.5\\JDY-BLE\\src\\com\\example";// "E:\\atgeretg\\document\\java基于swing界面的管理系统\\卜帅JAVA项目答辩\\xiangmu12-30\\src";
+		String gbkPath = "C:\\Users\\hyt009\\Desktop\\JDY-BLE\\src\\com\\example";// "E:\\atgeretg\\document\\java基于swing界面的管理系统\\卜帅JAVA项目答辩\\xiangmu12-30\\src";
 		// String path = "E:\\atgeretg\\document\\";
 		// System.out.println(StrUtil.substringAfterLast(path1, path));
 //		String utf8Path = "E:\\project\\android\\DoorLock\\app\\src\\main\\java\\com\\door\\hyt\\doorlock";

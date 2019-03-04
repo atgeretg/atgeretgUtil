@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.atgeretg.util.number.NumUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -41,7 +42,38 @@ public class ArrayUtil {
 //		System.out.println(Arrays.toString(array));
 	}
 	
-//	public static 
+//	public static
+
+	/**
+	 * String数组转int数组,不会报错，int数据与传入的String数组大小一样，当String数组字符不是数字时，此值会变成指定失败值
+	 * @param failValue 指定失败值
+	 * @param strArr
+	 * @return
+	 */
+	public static int[] strArr2intArr(String[] strArr,int failValue) {
+		int[] intArr = new int[strArr.length];
+//        String str;
+		for (int i = 0; i < strArr.length; i++) {
+			intArr[i] = NumUtils.string2IntValue(strArr[i], failValue);
+		}
+		return intArr;
+	}
+
+	/**
+	 * String数组转int数组，当String数组字符不是数字时会报错
+	 *
+	 * @param strArr
+	 * @return
+	 */
+	public static int[] strArr2intArr(String[] strArr) {
+		int[] intArr = new int[strArr.length];
+		for (int i = 0; i < strArr.length; i++) {
+			intArr[i] = Integer.valueOf(strArr[i]);
+		}
+		return intArr;
+	}
+
+
 
 	/**
 	 * Integer[]转换成int[],这个也可以直接调用org.apache.commons.lang3.ArrayUtils.toPrimitive()，还其它类型直接调用apache这个方法

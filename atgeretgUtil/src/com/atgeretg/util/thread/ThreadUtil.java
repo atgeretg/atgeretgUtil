@@ -5,6 +5,7 @@ public class ThreadUtil {
 		try {
 			Thread.sleep(time);
 		} catch (Exception e) {
+			Thread.interrupted();
 			e.printStackTrace();
 		}
 	}
