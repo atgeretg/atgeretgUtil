@@ -34,6 +34,25 @@ public class ReadExcelUtils {
 		try {
 //			Map map = new Hashtable<>();//HashMap<>();
 			InputStream is = new FileInputStream(filepath);
+			initUtils(is,ext);
+		} catch (Exception e) {
+			logger.error("IOException", e);
+		}
+
+	}
+
+	public ReadExcelUtils(InputStream is, String ext) {
+		try {
+			initUtils(is,ext);
+		} catch (Exception e) {
+			logger.error("IOException", e);
+		}
+	}
+
+	private void initUtils(InputStream is, String ext) throws Exception{
+		if(is == null || ext==null){
+			return;
+		}
 			if(".xls".equals(ext)){
 				wb = (Workbook) new HSSFWorkbook(is);
 			}else if(".xlsx".equals(ext)){
@@ -41,17 +60,12 @@ public class ReadExcelUtils {
 			}else{
 				wb=null;
 			}
-		} catch (FileNotFoundException e) {
-			logger.error("FileNotFoundException", e);
-		} catch (IOException e) {
-			logger.error("IOException", e);
-		}
+
 	}
 	
 	/**
 	 * 读取Excel表格表头的内容
 	 * 
-	 * @param InputStream
 	 * @return String 表头内容的数组
 	 */
 	public String[] readExcelTitle() throws Exception{
@@ -74,7 +88,6 @@ public class ReadExcelUtils {
 	/**
 	 * 读取Excel数据内容
 	 * 
-	 * @param InputStream
 	 * @return Map 包含单元格数据内容的Map对象
 	 */
 	public Map<Integer, Map<Integer,Object>> readExcelContent() throws Exception{

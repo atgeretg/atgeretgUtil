@@ -163,26 +163,9 @@ public class StrUtil {
 
 	/**
 	 * 字符串数组转成字符串
-	 * 
-	 * @param str
-	 *            数组（集合）
-	 * @return
-	 */
-	public static String array2String(List<String> str) {
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < str.size(); i++) {
-			builder.append(str.get(i));
-		}
-		return builder.toString();
-	}
-
-	/**
-	 * 字符串数组转成字符串
-	 * 
+	 *
 	 * @param str
 	 *            数组
-	 * @param split
-	 *            分割符
 	 * @return
 	 */
 	public static String array2String(String str[]) {
@@ -193,29 +176,46 @@ public class StrUtil {
 		return builder.toString();
 	}
 
+
 	/**
-	 * 字符串数组按指定分割符转成字符串
-	 * 
-	 * @param str
-	 *            数组（集合）
+	 * 数组按指定分割符转成字符串
+	 *
+	 * @param objects
+	 *            数组
 	 * @param split
 	 *            分割符
 	 * @return
 	 */
-	public static String array2String(List<String> str, String split) {
+	public static String array2String(Object objects[], String split) {
 		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < str.size(); i++) {
-			if (i != str.size() - 1)
-				builder.append(str.get(i)).append(split);
+		for (int i = 0; i < objects.length; i++) {
+			if (i != objects.length - 1)
+				builder.append(objects[i]).append(split);
 			else
-				builder.append(str.get(i));
+				builder.append(objects[i]);
 		}
 		return builder.toString();
 	}
 
 	/**
-	 * 字符串数组按指定分割符转成字符串
+	 * 数组转成字符串
 	 * 
+	 * @param objects
+	 *            数组
+	 * @return
+	 */
+	public static String array2String(Object objects[]) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < objects.length; i++) {
+			builder.append(objects[i]);
+		}
+		return builder.toString();
+	}
+
+
+	/**
+	 * 字符串数组按指定分割符转成字符串
+	 *
 	 * @param str
 	 *            数组
 	 * @param split
@@ -229,6 +229,38 @@ public class StrUtil {
 				builder.append(str[i]).append(split);
 			else
 				builder.append(str[i]);
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * List按拼接成字符串
+	 *
+	 * @param list  数组（集合）
+	 * @return
+	 */
+	public static String array2String(List list) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+				builder.append(list.get(i));
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * List按指定分割符转成字符串
+	 *
+	 * @param list  数组（集合）
+	 * @param split 分割符
+	 * @return
+	 */
+	public static String array2String(List list, String split) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+			if (i != list.size() - 1)
+				builder.append(list.get(i)).append(split);
+			else
+				builder.append(list.get(i));
 		}
 		return builder.toString();
 	}
@@ -312,7 +344,6 @@ public class StrUtil {
 	 * 如果后一个是大写字母，“_”去掉，大写字母不变。<br>
 	 * 如：a_b_cc_dd --> aBCcDd;a_b_cc_2d --> aBCc_2d;a_f_dFF_Dd --> aFDFFDd
 	 * 
-	 * @param str
 	 * @return
 	 */
 	public static String changeCharPostion(String content) {
@@ -869,7 +900,7 @@ public class StrUtil {
 	 *            源字符串
 	 * @param size
 	 *            扩大后的长度
-	 * @param padStr
+	 * @param padChar
 	 *            补充的字符
 	 * @return String
 	 */
@@ -986,7 +1017,7 @@ public class StrUtil {
 	 *            源字符串
 	 * @param size
 	 *            指定的长度
-	 * @param padStr
+	 * @param padChar
 	 *            长度不够时补充的字符串
 	 * @return String
 	 * @throws IllegalArgumentException
