@@ -19,13 +19,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import com.atgeretg.util.date.DateUtil;
 import com.atgeretg.util.string.StrUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileUtil {
-	static Logger log = Logger.getLogger(FileUtil.class);
+	static Logger log = LoggerFactory.getLogger(FileUtil.class);
 	public static final String ASCII = "ASCII";
 	public static final String ISO_8859_1 = "ISO-8859-1";
 	public static final String GB2312 = "GB2312";
@@ -212,16 +214,14 @@ public class FileUtil {
 				fos.write(b, 0, len);
 			}
 			fos.flush();
-		} catch (FileNotFoundException e) {
-			log.error(e);
-		} catch (IOException e) {
-			log.error(e);
+		} catch (Exception e) {
+			log.error("Exception",e);
 		} finally {
 			try {
 				fos.close();
 				in.close();
 			} catch (Exception e) {
-				log.error(e);
+				log.error("Exception",e);
 			}
 		}
 	}
@@ -453,7 +453,7 @@ public class FileUtil {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Exception",e);
 		} finally {
 			try {
 				if (writer != null) {
@@ -463,7 +463,7 @@ public class FileUtil {
 				if (reader != null)
 					reader.close();
 			} catch (IOException e) {
-				log.error(e);
+				log.error("Exception",e);
 			}
 
 		}
@@ -491,10 +491,8 @@ public class FileUtil {
 			byte[] data = outputStream.toByteArray();
 			fileInputStream.close();
 			return data;
-		} catch (FileNotFoundException e) {
-			log.error(e);
-		} catch (IOException e) {
-			log.error(e);
+		} catch (Exception e) {
+			log.error("Exception",e);
 		}
 		return null;
 	}
@@ -522,9 +520,9 @@ public class FileUtil {
 			fileInputStream.close();
 			return new String(data);
 		} catch (FileNotFoundException e) {
-			log.error(e);
+			log.error("Exception",e);
 		} catch (IOException e) {
-			log.error(e);
+			log.error("Exception",e);
 		}
 		return null;
 	}
@@ -554,9 +552,9 @@ public class FileUtil {
 			fileInputStream.close();
 			return new String(data, encond);// 以GBK（什么编码格式）方式转
 		} catch (FileNotFoundException e) {
-			log.error(e);
+			log.error("Exception",e);
 		} catch (IOException e) {
-			log.error(e);
+			log.error("Exception",e);
 		}
 		return null;
 	}
@@ -626,7 +624,7 @@ public class FileUtil {
 			}
 			return list;
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Exception",e);
 		} finally {
 			// 流的关闭顺序：先打开的后关，后打开的先关， 否则有可能出现java.io.IOException: Stream closed异常
 			try {
@@ -637,7 +635,7 @@ public class FileUtil {
 				if (fis != null)
 					fis.close();
 			} catch (Exception e) {
-				log.error(e);
+				log.error("Exception",e);
 			}
 		}
 		return null;
