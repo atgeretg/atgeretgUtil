@@ -290,6 +290,8 @@ public class NumberCalc {
         } catch (ArithmeticException e) {
             //结果为无限小数
             divide = bd1.divide(bd2,6,BigDecimal.ROUND_HALF_UP);
+        }catch(Exception e) {
+            throw e;
         }
         return divide;
     }
